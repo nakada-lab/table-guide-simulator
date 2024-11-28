@@ -12,6 +12,7 @@ export default function Index() {
   return (
     <div className="flex h-screen items-center justify-center flex-col">
       <Header />
+      <hr className="border-2 border-primary my-4 w-full" />
       <div className="w-full flex-1"></div>
     </div>
   );
