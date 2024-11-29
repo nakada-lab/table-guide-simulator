@@ -1,5 +1,5 @@
 export default function Tables() {
-  const createTable = (start: number, end: number, has2ndDiv: Boolean) => {
+  const createTable = (start: number, end: number, has2ndDiv: boolean) => {
     return Array.from({ length: end - start + 1 }, (_, index) => (
       <div key={index} className="w-10 m-5 flex flex-col">
         <p>{start + index}</p>
