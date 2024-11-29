@@ -45,40 +45,38 @@ export default function Header() {
   }
 
   return (
-    <div className="w-full h-1/6 flex flex-col items-center">
-      <div className="navbar bg-primary">
-        <div className="flex-1">
-          <p className="text-xl font-bold m-4">金曜日 {clock.toLocaleTimeString()}</p>
-        </div>
-        <div className="flex-none btn-ghost text-3xl">
-          {/* {playBack ?
+    <div className="navbar bg-primary">
+      <div className="flex-1">
+        <p className="text-xl font-bold m-4">金曜日 {clock.toLocaleTimeString()}</p>
+      </div>
+      <div className="flex-none btn-ghost text-3xl">
+        {/* {playBack ?
             <button className="ml-1" onClick={handlePlayBack}>
-              <IoPlayBackCircleSharp />
+            <IoPlayBackCircleSharp />
             </button> :
             <p className='ml-1 text-gray-500'>
-              <IoPlayBackCircleSharp />
+            <IoPlayBackCircleSharp />
             </p>
-          } */}
-          <button className="ml-1" onClick={handlePlayPause}>
-            {playPause ? <IoStopCircleSharp /> : <IoPlayCircleSharp />}
-          </button>
-          {/* {playForward ?
+            } */}
+        <button className="ml-1" onClick={handlePlayPause}>
+          {playPause ? <IoStopCircleSharp /> : <IoPlayCircleSharp />}
+        </button>
+        {/* {playForward ?
             <button className="ml-1" onClick={handlePlayForward}>
-              <IoPlayForwardCircleSharp />
+            <IoPlayForwardCircleSharp />
             </button> :
             <p className='ml-1 text-gray-500'>
-              <IoPlayForwardCircleSharp />
+            <IoPlayForwardCircleSharp />
             </p>
-          } */}
-          {reload ?
-            <button className="ml-1" onClick={() => document.getElementById('my_modal_1').showModal()}>
-              <IoReloadCircleSharp />
-            </button> :
-            <p className='ml-1 text-gray-500'>
-              <IoReloadCircleSharp />
-            </p>
-          }
-        </div>
+            } */}
+        {reload ?
+          <button className="ml-1" onClick={() => document.getElementById('my_modal_1').showModal()}>
+            <IoReloadCircleSharp />
+          </button> :
+          <p className='ml-1 text-gray-500'>
+            <IoReloadCircleSharp />
+          </p>
+        }
       </div>
       <dialog id="my_modal_1" className="modal">
         <div className="modal-box">
