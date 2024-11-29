@@ -9,7 +9,7 @@ export default function Header() {
   const [reload, setReload] = useState(true)
 
   function getRandomTimeInRange() {
-    const hours = Math.floor(Math.random() * (22 - 9) + 9)
+    const hours = Math.floor(Math.random() * (22 - 10) + 10)
     const minutes = Math.floor(Math.random() * 60)
     const seconds = Math.floor(Math.random() * 60)
 
