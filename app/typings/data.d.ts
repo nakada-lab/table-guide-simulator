@@ -10,13 +10,16 @@ declare module "/app/models/data.json" {
     quantity: number;
   }
 
-  interface Data {
+  interface VisitData {
     uuid: string;
-    visit_time: string;
     departure_time: string;
     duration: number;
     group_composition: GroupComposition[];
     ordered_items: OrderedItem[];
+  }
+
+  interface Data {
+    [visit_time: string]: VisitData;
   }
 
   const data: Data;
