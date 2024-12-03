@@ -39,7 +39,7 @@ export default function Index() {
 
   return (
     <div className="flex h-screen items-center justify-center flex-col">
-      <div className="w-full h-1/6 flex flex-col">
+      <div className="w-full h-1/5 flex flex-col">
         <Header
           clock={clock}
           playPause={playPause}
