@@ -2,6 +2,18 @@ import { useState, useEffect } from "react";
 import Header from "~/components/header";
 import { getEmoji } from "~/utils/myFunction";
 import data from 'app/models/data.json';
+import { ClientActionFunctionArgs, useActionData } from "@remix-run/react";
+
+export async function clientAction({ request }: ClientActionFunctionArgs) {
+  const formData = await request.formData();
+  const min = formData.get("min");
+
+  if (!min) {
+    return { error: "時間を入力してください" };
+  }
+
+  return min;
+}
 
 export default function Index() {
   const [clock, setClock] = useState(getRandomTimeInRange());
@@ -10,6 +22,7 @@ export default function Index() {
   const [selectedQueue, setSelectedQueue] = useState<string>('');
   const [selectedTable, setSelectedTable] = useState<string>('');
   const [tableData, setTableData] = useState<{ [key: string]: any[] }>({ 1: [[null, null], [null, null]], 2: [[null, null], [null, null]], 3: [[null, null], [null, null]], 4: [[null, null], [null, null]], 5: [[null, null], [null, null], [null, null], [null, null]], 6: [[null, null], [null, null]], 7: [[null, null], [null, null]], 8: [[null, null], [null, null]], 9: [[null, null], [null, null]], 10: [[null, null], [null, null], [null, null], [null, null]], 11: [[null, null]], 12: [[null, null]], 13: [[null, null]], 14: [[null, null]], 15: [[null, null]] });
+  const [simTime, setSimTime] = useState(1000)
 
   function getRandomTimeInRange() {
     const hours = Math.floor(Math.random() * (22 - 10) + 10);
@@ -21,17 +34,25 @@ export default function Index() {
     return dateTime;
   }
 
+  const actionData = useActionData<typeof clientAction>();
+
+  useEffect(() => {
+    if (actionData && !actionData.error) {
+      setSimTime(Math.floor((actionData * 1000) / 60))
+    }
+  }, [actionData]);
+
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
     if (playPause) {
       timer = setInterval(() => {
         setClock((prevClock) => new Date(prevClock.getTime() + 1000));
-      }, 84);
+      }, simTime);
     }
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [playPause]);
+  }, [playPause, simTime]);
 
   useEffect(() => {
     if (clock.toLocaleTimeString() in data) {
