@@ -53,6 +53,7 @@ export default function Index() {
     setClock(getRandomTimeInRange());
     setPlayPause(true);
     setQueue([]);
+    setTableData({ 1: [[null, null], [null, null]], 2: [[null, null], [null, null]], 3: [[null, null], [null, null]], 4: [[null, null], [null, null]], 5: [[null, null], [null, null], [null, null], [null, null]], 6: [[null, null], [null, null]], 7: [[null, null], [null, null]], 8: [[null, null], [null, null]], 9: [[null, null], [null, null]], 10: [[null, null], [null, null], [null, null], [null, null]], 11: [[null, null]], 12: [[null, null]], 13: [[null, null]], 14: [[null, null]], 15: [[null, null]] })
   };
 
   const handleQueueClick = (index: number, uuid: string) => {
