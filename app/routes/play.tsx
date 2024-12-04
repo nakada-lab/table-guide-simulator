@@ -42,7 +42,6 @@ export default function Index() {
         setQueue(prevQueue => [...prevQueue, newGroup]);
       }
     }
-    console.log(queue)
   }, [clock])
 
   const handlePlayPauseToggle = () => {
@@ -52,6 +51,7 @@ export default function Index() {
   const handleReload = () => {
     setClock(getRandomTimeInRange());
     setPlayPause(true);
+    setQueue([])
   };
 
   return (
@@ -64,7 +64,7 @@ export default function Index() {
           onReload={handleReload}
         />
         <div className="flex items-start justify-start text-left">
-
+          {queue}
         </div>
       </div>
       <hr className="border-2 border-primary my-4 w-full" />
