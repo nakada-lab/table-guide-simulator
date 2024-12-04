@@ -3,6 +3,7 @@ import Header from "~/components/header";
 import Tables from "~/components/tables";
 import data from 'app/models/data.json';
 import { getEmoji } from "~/utils/myFunction";
+import Queue from "~/components/queue";
 
 export default function Index() {
   const [clock, setClock] = useState(getRandomTimeInRange());
@@ -56,18 +57,16 @@ export default function Index() {
 
   return (
     <div className="flex h-screen items-center justify-center flex-col">
-      <div className="w-full h-1/5 flex flex-col">
+      <div className="w-full h-1/4 flex flex-col">
         <Header
           clock={clock}
           playPause={playPause}
           onPlayPauseToggle={handlePlayPauseToggle}
           onReload={handleReload}
         />
-        <div className="flex items-start justify-start text-left">
-          {queue}
-        </div>
+        <Queue queue={queue} />
       </div>
-      <hr className="border-2 border-primary my-4 w-full" />
+      <hr className="border-2 border-primary mb-4 w-full" />
       <div className="w-full flex-1 flex justify-center items-center flex-col">
         <Tables />
       </div>
