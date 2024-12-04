@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import Header from "~/components/header";
 import Tables from "~/components/tables";
+import data from 'app/models/data.json';
+import { getEmoji } from "~/utils/myFunction";
 
 export default function Index() {
   const [clock, setClock] = useState(getRandomTimeInRange());
   const [playPause, setPlayPause] = useState(true);
+  const [queue, setQueue] = useState<string[]>([]);
 
   function getRandomTimeInRange() {
     const hours = Math.floor(Math.random() * (22 - 10) + 10);
@@ -28,6 +31,20 @@ export default function Index() {
     };
   }, [playPause]);
 
+
+  useEffect(() => {
+    if (clock.toLocaleTimeString() in data) {
+      const visitData = data[clock.toLocaleTimeString()]
+      const newGroup = visitData['group_composition'].map(i =>
+        getEmoji(i['age'], i['gender'])
+      );
+      if (newGroup.length > 0) {
+        setQueue(prevQueue => [...prevQueue, newGroup]);
+      }
+    }
+    console.log(queue)
+  }, [clock])
+
   const handlePlayPauseToggle = () => {
     setPlayPause(!playPause);
   };
@@ -47,13 +64,13 @@ export default function Index() {
           onReload={handleReload}
         />
         <div className="flex items-start justify-start text-left">
-          <p></p>
+
         </div>
       </div>
       <hr className="border-2 border-primary my-4 w-full" />
       <div className="w-full flex-1 flex justify-center items-center flex-col">
         <Tables />
       </div>
-    </div>
+    </div >
   );
 }
