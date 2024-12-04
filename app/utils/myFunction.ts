@@ -1,5 +1,7 @@
 export function getEmoji(age: number, gender: string): string {
-  if (age < 0) {
+  if (age == null) {
+    return "";
+  } else if (age < 0) {
     throw new Error("Age must be 0 or above.");
   }
 
