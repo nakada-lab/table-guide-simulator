@@ -25,7 +25,7 @@ export default function Index() {
             <div className="flex-1">
               <input
                 type="text"
-                name="numericField"
+                name="min"
                 min="0"
                 step="1"
                 placeholder="2"
