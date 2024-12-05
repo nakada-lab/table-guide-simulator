@@ -16,7 +16,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   return min;
 }
 
-export default function Index() {
+export default function Play() {
   const tables = { 1: ['', ''], 2: ['', ''], 3: ['', ''], 4: ['', ''], 5: ['', ''], 6: ['', ''], 7: ['', ''], 8: ['', ''], 9: ['', ''], 10: ['', ''], 11: ['', ''], 12: ['', ''], 13: ['', '', '', ''], 14: ['', '', '', ''], 15: ['', '', '', ''], 16: ['', '', '', ''], 17: [''], 18: [''], 19: [''], 20: [''], 21: [''], 22: [''] }
   const [clock, setClock] = useState(getRandomTimeInRange());
   const [playPause, setPlayPause] = useState(true);
