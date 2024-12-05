@@ -17,7 +17,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function Index() {
-  const tables = { 1: [[null, null], [null, null]], 2: [[null, null], [null, null]], 3: [[null, null], [null, null]], 4: [[null, null], [null, null]], 5: [[null, null], [null, null]], 6: [[null, null], [null, null]], 7: [[null, null], [null, null]], 8: [[null, null], [null, null]], 9: [[null, null], [null, null]], 10: [[null, null], [null, null]], 11: [[null, null], [null, null]], 12: [[null, null], [null, null]], 13: [[null, null], [null, null], [null, null], [null, null]], 14: [[null, null], [null, null], [null, null], [null, null]], 15: [[null, null], [null, null], [null, null], [null, null]], 16: [[null, null], [null, null], [null, null], [null, null]], 17: [[null, null]], 18: [[null, null]], 19: [[null, null]], 20: [[null, null]], 21: [[null, null]], 22: [[null, null]] }
+  const tables = { 1: ['', ''], 2: ['', ''], 3: ['', ''], 4: ['', ''], 5: ['', ''], 6: ['', ''], 7: ['', ''], 8: ['', ''], 9: ['', ''], 10: ['', ''], 11: ['', ''], 12: ['', ''], 13: ['', '', '', ''], 14: ['', '', '', ''], 15: ['', '', '', ''], 16: ['', '', '', ''], 17: [''], 18: [''], 19: [''], 20: [''], 21: [''], 22: [''] }
   const [clock, setClock] = useState(getRandomTimeInRange());
   const [playPause, setPlayPause] = useState(true);
   const [queue, setQueue] = useState<string[][]>([]);
@@ -160,7 +160,6 @@ export default function Index() {
       if (newGroup.length > 0) {
         setQueue((prevQueue) => [...prevQueue, [visitData['uuid'], newGroup, visitData['duration']]]);
       }
-      console.log(queue)
     }
   }, [clock]);
 
@@ -197,15 +196,12 @@ export default function Index() {
   }, [selectedQueue, selectedTable]);
 
   const processSelection = (selectedQueue: string, selectedTable: string) => {
-    const foundEntry = Object.entries(data).find(([_, value]) =>
-      value.uuid === selectedQueue
-    );
-    const result = foundEntry ? foundEntry[1] : undefined;
-    const group_composition = result?.group_composition.map(person => [person.age, person.gender]) || [];
+    const queueIndex = queue.findIndex(item => item[0] === selectedQueue);
+    const emojiGroup = queue[queueIndex][1];
 
     if (
-      group_composition.length > (tableData[selectedTable]?.length || 0) ||
-      tableData[selectedTable]?.some(row => row.some(value => value !== null))
+      emojiGroup.length > (tableData[selectedTable]?.length || 0) ||
+      tableData[selectedTable]?.some(value => value !== '')
     ) {
       return;
     }
@@ -213,21 +209,20 @@ export default function Index() {
     setTableData(prevState => {
       const targetTableData = prevState[selectedTable] || [];
       const targetLength = targetTableData.length;
-
-      const paddedGroupComposition = [
-        ...group_composition,
-        ...Array(Math.max(0, targetLength - group_composition.length)).fill([null, null])
+      const paddedEmojiGroup = [
+        ...emojiGroup,
+        ...Array(Math.max(0, targetLength - emojiGroup.length)).fill('')
       ];
 
       return {
         ...prevState,
-        [selectedTable]: paddedGroupComposition
+        [selectedTable]: paddedEmojiGroup
       };
     });
 
-    setQueue(prevState => {
-      return prevState.filter((_, i) => i !== queue.findIndex(item => item[0] === selectedQueue));
-    });
+    setQueue(prevState =>
+      prevState.filter((_, i) => i !== queueIndex)
+    );
   };
 
 
@@ -237,10 +232,10 @@ export default function Index() {
         <p>1</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['1'][0][0], tableData['1'][0][1])}</p>
+            <p className="text-xl">{tableData['1'][0]}</p>
           </div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['1'][1][0], tableData['1'][1][1])}</p>
+            <p className="text-xl">{tableData['1'][1]}</p>
           </div>
           <div className="w-full h-4 border flex items-center justify-center">
             <p className="text-xs text-center">{ }</p>
@@ -256,10 +251,10 @@ export default function Index() {
         <p>2</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['2'][0][0], tableData['2'][0][1])}</p>
+            <p className="text-xl">{tableData['2'][0]}</p>
           </div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['2'][1][0], tableData['2'][1][1])}</p>
+            <p className="text-xl">{tableData['2'][1]}</p>
           </div>
           <div className="w-full h-4 border flex items-center justify-center">
             <p className="text-xs text-center">{ }</p>
@@ -275,10 +270,10 @@ export default function Index() {
         <p>3</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['3'][0][0], tableData['3'][0][1])}</p>
+            <p className="text-xl">{tableData['3'][0]}</p>
           </div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['3'][1][0], tableData['3'][1][1])}</p>
+            <p className="text-xl">{tableData['3'][1]}</p>
           </div>
           <div className="w-full h-4 border flex items-center justify-center">
             <p className="text-xs text-center">{ }</p>
@@ -294,10 +289,10 @@ export default function Index() {
         <p>4</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['4'][0][0], tableData['4'][0][1])}</p>
+            <p className="text-xl">{tableData['4'][0]}</p>
           </div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['4'][1][0], tableData['4'][1][1])}</p>
+            <p className="text-xl">{tableData['4'][1]}</p>
           </div>
           <div className="w-full h-4 border flex items-center justify-center">
             <p className="text-xs text-center">{ }</p>
@@ -313,10 +308,10 @@ export default function Index() {
         <p>5</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['5'][0][0], tableData['5'][0][1])}</p>
+            <p className="text-xl">{tableData['5'][0]}</p>
           </div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['5'][1][0], tableData['5'][1][1])}</p>
+            <p className="text-xl">{tableData['5'][1]}</p>
           </div>
           <div className="w-full h-4 border flex items-center justify-center">
             <p className="text-xs text-center">{ }</p>
@@ -332,10 +327,10 @@ export default function Index() {
         <p>6</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['6'][0][0], tableData['6'][0][1])}</p>
+            <p className="text-xl">{tableData['6'][0]}</p>
           </div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['6'][1][0], tableData['6'][1][1])}</p>
+            <p className="text-xl">{tableData['6'][1]}</p>
           </div>
           <div className="w-full h-4 border flex items-center justify-center">
             <p className="text-xs text-center">{ }</p>
@@ -351,10 +346,10 @@ export default function Index() {
         <p>7</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['7'][0][0], tableData['7'][0][1])}</p>
+            <p className="text-xl">{tableData['7'][0]}</p>
           </div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['7'][1][0], tableData['7'][1][1])}</p>
+            <p className="text-xl">{tableData['7'][1]}</p>
           </div>
           <div className="w-full h-4 border flex items-center justify-center">
             <p className="text-xs text-center">{ }</p>
@@ -370,18 +365,18 @@ export default function Index() {
         <p>8</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['8'][0][0], tableData['8'][0][1])}</p>
+            <p className="text-xl">{tableData['8'][0]}</p>
           </div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['8'][1][0], tableData['8'][1][1])}</p>
+            <p className="text-xl">{tableData['8'][1]}</p>
           </div>
           <div className="w-full h-4 border flex items-center justify-center">
             <p className="text-xs text-center">{ }</p>
           </div>
         </div>
       </button>
-    )
-  }
+    );
+  };
 
   const generateTable9 = () => {
     return (
@@ -389,10 +384,10 @@ export default function Index() {
         <p>9</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['9'][0][0], tableData['9'][0][1])}</p>
+            <p className="text-xl">{tableData['9'][0]}</p>
           </div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['9'][1][0], tableData['9'][1][1])}</p>
+            <p className="text-xl">{tableData['9'][1]}</p>
           </div>
           <div className="w-full h-4 border flex items-center justify-center">
             <p className="text-xs text-center">{ }</p>
@@ -408,10 +403,10 @@ export default function Index() {
         <p>10</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['10'][0][0], tableData['10'][0][1])}</p>
+            <p className="text-xl">{tableData['10'][0]}</p>
           </div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['10'][1][0], tableData['10'][1][1])}</p>
+            <p className="text-xl">{tableData['10'][1]}</p>
           </div>
           <div className="w-full h-4 border flex items-center justify-center">
             <p className="text-xs text-center">{ }</p>
@@ -427,10 +422,10 @@ export default function Index() {
         <p>11</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['11'][0][0], tableData['11'][0][1])}</p>
+            <p className="text-xl">{tableData['11'][0]}</p>
           </div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['11'][1][0], tableData['11'][1][1])}</p>
+            <p className="text-xl">{tableData['11'][1]}</p>
           </div>
           <div className="w-full h-4 border flex items-center justify-center">
             <p className="text-xs text-center">{ }</p>
@@ -447,10 +442,10 @@ export default function Index() {
         <div className="">
           <div>
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['12'][0][0], tableData['12'][0][1])}</p>
+              <p className="text-xl">{tableData['12'][0]}</p>
             </div>
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['12'][1][0], tableData['12'][1][1])}</p>
+              <p className="text-xl">{tableData['12'][1]}</p>
             </div>
             <div className="w-full h-4 border flex items-center justify-center">
               <p className="text-xs text-center">{ }</p>
@@ -468,18 +463,18 @@ export default function Index() {
         <div className="">
           <div className="flex">
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['13'][0][0], tableData['13'][0][1])}</p>
+              <p className="text-xl">{tableData['13'][0]}</p>
             </div>
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['13'][1][0], tableData['13'][1][1])}</p>
+              <p className="text-xl">{tableData['13'][1]}</p>
             </div>
           </div>
           <div className="flex">
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['13'][2][0], tableData['13'][2][1])}</p>
+              <p className="text-xl">{tableData['13'][2]}</p>
             </div>
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['13'][3][0], tableData['13'][3][1])}</p>
+              <p className="text-xl">{tableData['13'][3]}</p>
             </div>
           </div>
           <div className="w-full h-4 border flex items-center justify-center">
@@ -489,26 +484,27 @@ export default function Index() {
       </button>
     )
   }
+
 
   const generateTable14 = () => {
     return (
       <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(14)}>
         <p>14</p>
-        <div className="">
+        <div>
           <div className="flex">
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['14'][0][0], tableData['14'][0][1])}</p>
+              <p className="text-xl">{tableData['14'][0]}</p>
             </div>
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['14'][1][0], tableData['14'][1][1])}</p>
+              <p className="text-xl">{tableData['14'][1]}</p>
             </div>
           </div>
           <div className="flex">
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['14'][2][0], tableData['14'][2][1])}</p>
+              <p className="text-xl">{tableData['14'][2]}</p>
             </div>
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['14'][3][0], tableData['14'][3][1])}</p>
+              <p className="text-xl">{tableData['14'][3]}</p>
             </div>
           </div>
           <div className="w-full h-4 border flex items-center justify-center">
@@ -516,28 +512,28 @@ export default function Index() {
           </div>
         </div>
       </button>
-    )
-  }
+    );
+  };
 
   const generateTable15 = () => {
     return (
       <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(15)}>
         <p>15</p>
-        <div className="">
+        <div>
           <div className="flex">
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['15'][0][0], tableData['15'][0][1])}</p>
+              <p className="text-xl">{tableData['15'][0]}</p>
             </div>
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['15'][1][0], tableData['15'][1][1])}</p>
+              <p className="text-xl">{tableData['15'][1]}</p>
             </div>
           </div>
           <div className="flex">
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['15'][2][0], tableData['15'][2][1])}</p>
+              <p className="text-xl">{tableData['15'][2]}</p>
             </div>
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['15'][3][0], tableData['15'][3][1])}</p>
+              <p className="text-xl">{tableData['15'][3]}</p>
             </div>
           </div>
           <div className="w-full h-4 border flex items-center justify-center">
@@ -545,28 +541,28 @@ export default function Index() {
           </div>
         </div>
       </button>
-    )
-  }
+    );
+  };
 
   const generateTable16 = () => {
     return (
       <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(16)}>
         <p>16</p>
-        <div className="">
+        <div>
           <div className="flex">
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['16'][0][0], tableData['16'][0][1])}</p>
+              <p className="text-xl">{tableData['16'][0]}</p>
             </div>
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['16'][1][0], tableData['16'][1][1])}</p>
+              <p className="text-xl">{tableData['16'][1]}</p>
             </div>
           </div>
           <div className="flex">
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['16'][2][0], tableData['16'][2][1])}</p>
+              <p className="text-xl">{tableData['16'][2]}</p>
             </div>
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['16'][3][0], tableData['16'][3][1])}</p>
+              <p className="text-xl">{tableData['16'][3]}</p>
             </div>
           </div>
           <div className="w-full h-4 border flex items-center justify-center">
@@ -574,8 +570,8 @@ export default function Index() {
           </div>
         </div>
       </button>
-    )
-  }
+    );
+  };
 
   const generateTable17 = () => {
     return (
@@ -584,7 +580,7 @@ export default function Index() {
         <div className="">
           <div>
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['17'][0][0], tableData['17'][0][1])}</p>
+              <p className="text-xl">{tableData['17'][0]}</p>
             </div>
             <div className="w-full h-4 border flex items-center justify-center">
               <p className="text-xs text-center">{ }</p>
@@ -602,7 +598,7 @@ export default function Index() {
         <div className="">
           <div>
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['18'][0][0], tableData['18'][0][1])}</p>
+              <p className="text-xl">{tableData['18'][0]}</p>
             </div>
             <div className="w-full h-4 border flex items-center justify-center">
               <p className="text-xs text-center">{ }</p>
@@ -620,7 +616,7 @@ export default function Index() {
         <div className="">
           <div>
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['19'][0][0], tableData['19'][0][1])}</p>
+              <p className="text-xl">{tableData['19'][0]}</p>
             </div>
             <div className="w-full h-4 border flex items-center justify-center">
               <p className="text-xs text-center">{ }</p>
@@ -638,7 +634,7 @@ export default function Index() {
         <div className="">
           <div>
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['20'][0][0], tableData['20'][0][1])}</p>
+              <p className="text-xl">{tableData['20'][0]}</p>
             </div>
             <div className="w-full h-4 border flex items-center justify-center">
               <p className="text-xs text-center">{ }</p>
@@ -656,7 +652,7 @@ export default function Index() {
         <div className="">
           <div>
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['21'][0][0], tableData['21'][0][1])}</p>
+              <p className="text-xl">{tableData['21'][0]}</p>
             </div>
             <div className="w-full h-4 border flex items-center justify-center">
               <p className="text-xs text-center">{ }</p>
@@ -674,7 +670,7 @@ export default function Index() {
         <div className="">
           <div>
             <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['22'][0][0], tableData['22'][0][1])}</p>
+              <p className="text-xl">{tableData['22'][0]}</p>
             </div>
             <div className="w-full h-4 border flex items-center justify-center">
               <p className="text-xs text-center">{ }</p>
