@@ -107,12 +107,11 @@ export default function Index() {
 
 
   const divider = (index: number) => {
-    console.log(queue)
     const [first, second] = splitArrayAt(queue[index][1], value);
     const front = index > 0 ? queue.slice(0, index) : [];
     const dividedArray = [
-      [queue[index][0], first],
-      [uuidv4(), second]
+      [queue[index][0], first, queue[index][2]],
+      [uuidv4(), second, queue[index][2]]
     ];
 
     const behinde = index < queue.length - 1 ? queue.slice(index + 1) : [];
@@ -159,8 +158,9 @@ export default function Index() {
         getEmoji(i['age'], i['gender'])
       );
       if (newGroup.length > 0) {
-        setQueue((prevQueue) => [...prevQueue, [visitData['uuid'], newGroup]]);
+        setQueue((prevQueue) => [...prevQueue, [visitData['uuid'], newGroup, visitData['duration']]]);
       }
+      console.log(queue)
     }
   }, [clock]);
 
