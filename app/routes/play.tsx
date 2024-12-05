@@ -26,7 +26,6 @@ export default function Play() {
   const [tableData, setTableData] = useState<{ [key: string]: any[] }>(tables);
   const [simTime, setSimTime] = useState(1000)
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
-  const [divide, setDivide] = useState();
   const [value, setValue] = useState(0);
   const dialogRef = useRef(null);
 
