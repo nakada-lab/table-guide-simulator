@@ -9,6 +9,12 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
+  const convertToHalfWidth = (value: string) => {
+    return value.replace(/[０-９]/g, s =>
+      String.fromCharCode(s.charCodeAt(0) - 65248)
+    ).replace(/\D/g, '');
+  };
+
   return (
     <div className="flex h-screen items-center justify-center">
       <Form method="post" action="/play">
@@ -18,12 +24,15 @@ export default function Index() {
           <div className="flex items-center">
             <div className="flex-1">
               <input
-                type="number"
+                type="text"
                 name="numericField"
                 min="0"
                 step="1"
                 placeholder="2"
                 className="input input-bordered w-full"
+                onInput={(e) => {
+                  e.currentTarget.value = convertToHalfWidth(e.currentTarget.value);
+                }}
               />
             </div>
             <span className="ml-2">分</span>
