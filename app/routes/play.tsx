@@ -24,6 +24,15 @@ export default function Index() {
   const [selectedTable, setSelectedTable] = useState<string>('');
   const [tableData, setTableData] = useState<{ [key: string]: any[] }>(tables);
   const [simTime, setSimTime] = useState(1000)
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleQueueDoubleClick = (index, item) => {
+    if (item[1].length >= 3) {
+      setSelectedItem(item);
+      setIsPopupOpen(true);
+    }
+  };
 
   function getRandomTimeInRange() {
     const hours = Math.floor(Math.random() * (22 - 10) + 10);
@@ -48,7 +57,8 @@ export default function Index() {
     if (playPause) {
       timer = setInterval(() => {
         setClock((prevClock) => new Date(prevClock.getTime() + 1000));
-      }, simTime);
+        //}, simTime); FIXME: For debug
+      }, 33);
     }
     return () => {
       if (timer) clearInterval(timer);
@@ -601,11 +611,22 @@ export default function Index() {
                 : 'hover:bg-gray-100'
                 }`}
               onClick={() => handleQueueClick(index, item[0])}
+              onDoubleClick={() => handleQueueDoubleClick(index, item)}
             >
               <p className="text-4xl m-1">{item[1][0]}</p>
               <p className="text-xs absolute bottom-0 right-0">{item[1].length}</p>
             </button>
           ))}
+          {isPopupOpen && selectedItem && (
+            <div className="popup">
+              <button onClick={() => setIsPopupOpen(false)}>Close</button>
+              <div>
+                {selectedItem[1].map((value, index) => (
+                  <p key={index}>{value}</p>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <hr className="border-2 border-primary mb-4 w-full" />
