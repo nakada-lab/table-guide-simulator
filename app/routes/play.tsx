@@ -16,12 +16,13 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function Index() {
+  const tables = { 1: [[null, null], [null, null]], 2: [[null, null], [null, null]], 3: [[null, null], [null, null]], 4: [[null, null], [null, null]], 5: [[null, null], [null, null]], 6: [[null, null], [null, null]], 7: [[null, null], [null, null]], 8: [[null, null], [null, null]], 9: [[null, null], [null, null]], 10: [[null, null], [null, null]], 11: [[null, null], [null, null]], 12: [[null, null], [null, null]], 13: [[null, null], [null, null], [null, null], [null, null]], 14: [[null, null], [null, null], [null, null], [null, null]], 15: [[null, null], [null, null], [null, null], [null, null]], 16: [[null, null], [null, null], [null, null], [null, null]], 17: [[null, null]], 18: [[null, null]], 19: [[null, null]], 20: [[null, null]], 21: [[null, null]], 22: [[null, null]] }
   const [clock, setClock] = useState(getRandomTimeInRange());
   const [playPause, setPlayPause] = useState(true);
   const [queue, setQueue] = useState<string[][]>([]);
   const [selectedQueue, setSelectedQueue] = useState<string>('');
   const [selectedTable, setSelectedTable] = useState<string>('');
-  const [tableData, setTableData] = useState<{ [key: string]: any[] }>({ 1: [[null, null], [null, null]], 2: [[null, null], [null, null]], 3: [[null, null], [null, null]], 4: [[null, null], [null, null]], 5: [[null, null], [null, null], [null, null], [null, null]], 6: [[null, null], [null, null]], 7: [[null, null], [null, null]], 8: [[null, null], [null, null]], 9: [[null, null], [null, null]], 10: [[null, null], [null, null], [null, null], [null, null]], 11: [[null, null]], 12: [[null, null]], 13: [[null, null]], 14: [[null, null]], 15: [[null, null]] });
+  const [tableData, setTableData] = useState<{ [key: string]: any[] }>(tables);
   const [simTime, setSimTime] = useState(1000)
 
   function getRandomTimeInRange() {
@@ -74,7 +75,7 @@ export default function Index() {
     setClock(getRandomTimeInRange());
     setPlayPause(true);
     setQueue([]);
-    setTableData({ 1: [[null, null], [null, null]], 2: [[null, null], [null, null]], 3: [[null, null], [null, null]], 4: [[null, null], [null, null]], 5: [[null, null], [null, null], [null, null], [null, null]], 6: [[null, null], [null, null]], 7: [[null, null], [null, null]], 8: [[null, null], [null, null]], 9: [[null, null], [null, null]], 10: [[null, null], [null, null], [null, null], [null, null]], 11: [[null, null]], 12: [[null, null]], 13: [[null, null]], 14: [[null, null]], 15: [[null, null]] })
+    setTableData(tables)
   };
 
   const handleQueueClick = (index: number, uuid: string) => {
@@ -130,7 +131,7 @@ export default function Index() {
 
   const generateTable1 = () => {
     return (
-      <button className="m-4 flex flex-col items-center" onClick={() => handleTableClick(1)}>
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(1)}>
         <p>1</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
@@ -139,8 +140,8 @@ export default function Index() {
           <div className="w-10 h-10 border flex items-center justify-center">
             <p className="text-xl">{getEmoji(tableData['1'][1][0], tableData['1'][1][1])}</p>
           </div>
-          <div className="w-full h-14 border">
-            <p className="text-xs text-center"></p>
+          <div className="w-full h-4 border flex items-center justify-center">
+            <p className="text-xs text-center">{ }</p>
           </div>
         </div>
       </button>
@@ -149,7 +150,7 @@ export default function Index() {
 
   const generateTable2 = () => {
     return (
-      <button className="m-4 flex flex-col items-center" onClick={() => handleTableClick(2)}>
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(2)}>
         <p>2</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
@@ -158,8 +159,8 @@ export default function Index() {
           <div className="w-10 h-10 border flex items-center justify-center">
             <p className="text-xl">{getEmoji(tableData['2'][1][0], tableData['2'][1][1])}</p>
           </div>
-          <div className="w-full h-14 border">
-            <p className="text-xs text-center"></p>
+          <div className="w-full h-4 border flex items-center justify-center">
+            <p className="text-xs text-center">{ }</p>
           </div>
         </div>
       </button>
@@ -168,7 +169,7 @@ export default function Index() {
 
   const generateTable3 = () => {
     return (
-      <button className="m-4 flex flex-col items-center" onClick={() => handleTableClick(3)}>
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(3)}>
         <p>3</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
@@ -177,8 +178,8 @@ export default function Index() {
           <div className="w-10 h-10 border flex items-center justify-center">
             <p className="text-xl">{getEmoji(tableData['3'][1][0], tableData['3'][1][1])}</p>
           </div>
-          <div className="w-full h-14 border">
-            <p className="text-xs text-center"></p>
+          <div className="w-full h-4 border flex items-center justify-center">
+            <p className="text-xs text-center">{ }</p>
           </div>
         </div>
       </button>
@@ -187,17 +188,17 @@ export default function Index() {
 
   const generateTable4 = () => {
     return (
-      <button className="m-4 flex flex-col items-center" onClick={() => handleTableClick(4)}>
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(4)}>
         <p>4</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
             <p className="text-xl">{getEmoji(tableData['4'][0][0], tableData['4'][0][1])}</p>
           </div>
           <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{getEmoji(tableData['4'][0][0], tableData['4'][0][1])}</p>
+            <p className="text-xl">{getEmoji(tableData['4'][1][0], tableData['4'][1][1])}</p>
           </div>
-          <div className="w-full h-14 border">
-            <p className="text-xs text-center"></p>
+          <div className="w-full h-4 border flex items-center justify-center">
+            <p className="text-xs text-center">{ }</p>
           </div>
         </div>
       </button>
@@ -206,27 +207,17 @@ export default function Index() {
 
   const generateTable5 = () => {
     return (
-      <button className="m-4 flex flex-col items-center" onClick={() => handleTableClick(5)}>
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(5)}>
         <p>5</p>
-        <div className="">
-          <div className="flex">
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['5'][0][0], tableData['5'][0][1])}</p>
-            </div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['5'][1][0], tableData['5'][1][1])}</p>
-            </div>
+        <div>
+          <div className="w-10 h-10 border flex items-center justify-center">
+            <p className="text-xl">{getEmoji(tableData['5'][0][0], tableData['5'][0][1])}</p>
           </div>
-          <div className="flex">
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['5'][2][0], tableData['5'][2][1])}</p>
-            </div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['5'][3][0], tableData['5'][3][1])}</p>
-            </div>
+          <div className="w-10 h-10 border flex items-center justify-center">
+            <p className="text-xl">{getEmoji(tableData['5'][1][0], tableData['5'][1][1])}</p>
           </div>
-          <div className="w-full h-14 border">
-            <p className="text-xs text-center"></p>
+          <div className="w-full h-4 border flex items-center justify-center">
+            <p className="text-xs text-center">{ }</p>
           </div>
         </div>
       </button>
@@ -235,7 +226,7 @@ export default function Index() {
 
   const generateTable6 = () => {
     return (
-      <button className="m-4 flex flex-col items-center" onClick={() => handleTableClick(6)}>
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(6)}>
         <p>6</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
@@ -244,8 +235,8 @@ export default function Index() {
           <div className="w-10 h-10 border flex items-center justify-center">
             <p className="text-xl">{getEmoji(tableData['6'][1][0], tableData['6'][1][1])}</p>
           </div>
-          <div className="w-full h-14 border">
-            <p className="text-xs text-center"></p>
+          <div className="w-full h-4 border flex items-center justify-center">
+            <p className="text-xs text-center">{ }</p>
           </div>
         </div>
       </button>
@@ -254,7 +245,7 @@ export default function Index() {
 
   const generateTable7 = () => {
     return (
-      <button className="m-4 flex flex-col items-center" onClick={() => handleTableClick(7)}>
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(7)}>
         <p>7</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
@@ -263,8 +254,8 @@ export default function Index() {
           <div className="w-10 h-10 border flex items-center justify-center">
             <p className="text-xl">{getEmoji(tableData['7'][1][0], tableData['7'][1][1])}</p>
           </div>
-          <div className="w-full h-14 border">
-            <p className="text-xs text-center"></p>
+          <div className="w-full h-4 border flex items-center justify-center">
+            <p className="text-xs text-center">{ }</p>
           </div>
         </div>
       </button>
@@ -273,7 +264,7 @@ export default function Index() {
 
   const generateTable8 = () => {
     return (
-      <button className="m-4 flex flex-col items-center" onClick={() => handleTableClick(8)}>
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(8)}>
         <p>8</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
@@ -282,8 +273,8 @@ export default function Index() {
           <div className="w-10 h-10 border flex items-center justify-center">
             <p className="text-xl">{getEmoji(tableData['8'][1][0], tableData['8'][1][1])}</p>
           </div>
-          <div className="w-full h-14 border">
-            <p className="text-xs text-center"></p>
+          <div className="w-full h-4 border flex items-center justify-center">
+            <p className="text-xs text-center">{ }</p>
           </div>
         </div>
       </button>
@@ -292,7 +283,7 @@ export default function Index() {
 
   const generateTable9 = () => {
     return (
-      <button className="m-4 flex flex-col items-center" onClick={() => handleTableClick(9)}>
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(9)}>
         <p>9</p>
         <div>
           <div className="w-10 h-10 border flex items-center justify-center">
@@ -301,8 +292,8 @@ export default function Index() {
           <div className="w-10 h-10 border flex items-center justify-center">
             <p className="text-xl">{getEmoji(tableData['9'][1][0], tableData['9'][1][1])}</p>
           </div>
-          <div className="w-full h-14 border">
-            <p className="text-xs text-center"></p>
+          <div className="w-full h-4 border flex items-center justify-center">
+            <p className="text-xs text-center">{ }</p>
           </div>
         </div>
       </button>
@@ -311,27 +302,17 @@ export default function Index() {
 
   const generateTable10 = () => {
     return (
-      <button className="m-4 flex flex-col items-center" onClick={() => handleTableClick(10)}>
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(10)}>
         <p>10</p>
-        <div className="">
-          <div className="flex">
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['10'][0][0], tableData['10'][0][1])}</p>
-            </div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['10'][1][0], tableData['10'][1][1])}</p>
-            </div>
+        <div>
+          <div className="w-10 h-10 border flex items-center justify-center">
+            <p className="text-xl">{getEmoji(tableData['10'][0][0], tableData['10'][0][1])}</p>
           </div>
-          <div className="flex">
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['10'][2][0], tableData['10'][2][1])}</p>
-            </div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{getEmoji(tableData['10'][3][0], tableData['10'][3][1])}</p>
-            </div>
+          <div className="w-10 h-10 border flex items-center justify-center">
+            <p className="text-xl">{getEmoji(tableData['10'][1][0], tableData['10'][1][1])}</p>
           </div>
-          <div className="w-full h-14 border">
-            <p className="text-xs text-center"></p>
+          <div className="w-full h-4 border flex items-center justify-center">
+            <p className="text-xs text-center">{ }</p>
           </div>
         </div>
       </button>
@@ -340,13 +321,18 @@ export default function Index() {
 
   const generateTable11 = () => {
     return (
-      <button className="m-4 flex flex-col items-center" onClick={() => handleTableClick(11)}>
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(11)}>
         <p>11</p>
-        <div className="w-10 h-10 border flex items-center justify-center">
-          <p className="text-xl">{getEmoji(tableData['11'][0][0], tableData['11'][0][1])}</p>
-        </div>
-        <div className="w-10 h-14 border">
-          <p className="text-xs text-center"></p>
+        <div>
+          <div className="w-10 h-10 border flex items-center justify-center">
+            <p className="text-xl">{getEmoji(tableData['11'][0][0], tableData['11'][0][1])}</p>
+          </div>
+          <div className="w-10 h-10 border flex items-center justify-center">
+            <p className="text-xl">{getEmoji(tableData['11'][1][0], tableData['11'][1][1])}</p>
+          </div>
+          <div className="w-full h-4 border flex items-center justify-center">
+            <p className="text-xs text-center">{ }</p>
+          </div>
         </div>
       </button>
     )
@@ -354,13 +340,20 @@ export default function Index() {
 
   const generateTable12 = () => {
     return (
-      <button className="m-4 flex flex-col items-center" onClick={() => handleTableClick(12)}>
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(12)}>
         <p>12</p>
-        <div className="w-10 h-10 border flex items-center justify-center">
-          <p className="text-xl">{getEmoji(tableData['12'][0][0], tableData['12'][0][1])}</p>
-        </div>
-        <div className="w-10 h-14 border">
-          <p className="text-xs text-center"></p>
+        <div className="">
+          <div>
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['12'][0][0], tableData['12'][0][1])}</p>
+            </div>
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['12'][1][0], tableData['12'][1][1])}</p>
+            </div>
+            <div className="w-full h-4 border flex items-center justify-center">
+              <p className="text-xs text-center">{ }</p>
+            </div>
+          </div>
         </div>
       </button>
     )
@@ -368,13 +361,28 @@ export default function Index() {
 
   const generateTable13 = () => {
     return (
-      <button className="m-4 flex flex-col items-center" onClick={() => handleTableClick(13)}>
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(13)}>
         <p>13</p>
-        <div className="w-10 h-10 border flex items-center justify-center">
-          <p className="text-xl">{getEmoji(tableData['13'][0][0], tableData['13'][0][1])}</p>
-        </div>
-        <div className="w-10 h-14 border">
-          <p className="text-xs text-center"></p>
+        <div className="">
+          <div className="flex">
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['13'][0][0], tableData['13'][0][1])}</p>
+            </div>
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['13'][1][0], tableData['13'][1][1])}</p>
+            </div>
+          </div>
+          <div className="flex">
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['13'][2][0], tableData['13'][2][1])}</p>
+            </div>
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['13'][3][0], tableData['13'][3][1])}</p>
+            </div>
+          </div>
+          <div className="w-full h-4 border flex items-center justify-center">
+            <p className="text-xs text-center">{ }</p>
+          </div>
         </div>
       </button>
     )
@@ -382,13 +390,28 @@ export default function Index() {
 
   const generateTable14 = () => {
     return (
-      <button className="m-4 flex flex-col items-center" onClick={() => handleTableClick(14)}>
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(14)}>
         <p>14</p>
-        <div className="w-10 h-10 border flex items-center justify-center">
-          <p className="text-xl">{getEmoji(tableData['14'][0][0], tableData['14'][0][1])}</p>
-        </div>
-        <div className="w-10 h-14 border">
-          <p className="text-xs text-center"></p>
+        <div className="">
+          <div className="flex">
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['14'][0][0], tableData['14'][0][1])}</p>
+            </div>
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['14'][1][0], tableData['14'][1][1])}</p>
+            </div>
+          </div>
+          <div className="flex">
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['14'][2][0], tableData['14'][2][1])}</p>
+            </div>
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['14'][3][0], tableData['14'][3][1])}</p>
+            </div>
+          </div>
+          <div className="w-full h-4 border flex items-center justify-center">
+            <p className="text-xs text-center">{ }</p>
+          </div>
         </div>
       </button>
     )
@@ -396,13 +419,165 @@ export default function Index() {
 
   const generateTable15 = () => {
     return (
-      <button className="m-4 flex flex-col items-center" onClick={() => handleTableClick(15)}>
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(15)}>
         <p>15</p>
-        <div className="w-10 h-10 border flex items-center justify-center">
-          <p className="text-xl">{getEmoji(tableData['15'][0][0], tableData['15'][0][1])}</p>
+        <div className="">
+          <div className="flex">
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['15'][0][0], tableData['15'][0][1])}</p>
+            </div>
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['15'][1][0], tableData['15'][1][1])}</p>
+            </div>
+          </div>
+          <div className="flex">
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['15'][2][0], tableData['15'][2][1])}</p>
+            </div>
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['15'][3][0], tableData['15'][3][1])}</p>
+            </div>
+          </div>
+          <div className="w-full h-4 border flex items-center justify-center">
+            <p className="text-xs text-center">{ }</p>
+          </div>
         </div>
-        <div className="w-10 h-14 border">
-          <p className="text-xs text-center"></p>
+      </button>
+    )
+  }
+
+  const generateTable16 = () => {
+    return (
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(16)}>
+        <p>16</p>
+        <div className="">
+          <div className="flex">
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['16'][0][0], tableData['16'][0][1])}</p>
+            </div>
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['16'][1][0], tableData['16'][1][1])}</p>
+            </div>
+          </div>
+          <div className="flex">
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['16'][2][0], tableData['16'][2][1])}</p>
+            </div>
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['16'][3][0], tableData['16'][3][1])}</p>
+            </div>
+          </div>
+          <div className="w-full h-4 border flex items-center justify-center">
+            <p className="text-xs text-center">{ }</p>
+          </div>
+        </div>
+      </button>
+    )
+  }
+
+  const generateTable17 = () => {
+    return (
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(17)}>
+        <p>17</p>
+        <div className="">
+          <div>
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['17'][0][0], tableData['17'][0][1])}</p>
+            </div>
+            <div className="w-full h-4 border flex items-center justify-center">
+              <p className="text-xs text-center">{ }</p>
+            </div>
+          </div>
+        </div>
+      </button>
+    )
+  }
+
+  const generateTable18 = () => {
+    return (
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(18)}>
+        <p>18</p>
+        <div className="">
+          <div>
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['18'][0][0], tableData['18'][0][1])}</p>
+            </div>
+            <div className="w-full h-4 border flex items-center justify-center">
+              <p className="text-xs text-center">{ }</p>
+            </div>
+          </div>
+        </div>
+      </button>
+    )
+  }
+
+  const generateTable19 = () => {
+    return (
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(19)}>
+        <p>19</p>
+        <div className="">
+          <div>
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['19'][0][0], tableData['19'][0][1])}</p>
+            </div>
+            <div className="w-full h-4 border flex items-center justify-center">
+              <p className="text-xs text-center">{ }</p>
+            </div>
+          </div>
+        </div>
+      </button>
+    )
+  }
+
+  const generateTable20 = () => {
+    return (
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(20)}>
+        <p>20</p>
+        <div className="">
+          <div>
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['20'][0][0], tableData['20'][0][1])}</p>
+            </div>
+            <div className="w-full h-4 border flex items-center justify-center">
+              <p className="text-xs text-center">{ }</p>
+            </div>
+          </div>
+        </div>
+      </button>
+    )
+  }
+
+  const generateTable21 = () => {
+    return (
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(21)}>
+        <p>21</p>
+        <div className="">
+          <div>
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['21'][0][0], tableData['21'][0][1])}</p>
+            </div>
+            <div className="w-full h-4 border flex items-center justify-center">
+              <p className="text-xs text-center">{ }</p>
+            </div>
+          </div>
+        </div>
+      </button>
+    )
+  }
+
+  const generateTable22 = () => {
+    return (
+      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(22)}>
+        <p>22</p>
+        <div className="">
+          <div>
+            <div className="w-10 h-10 border flex items-center justify-center">
+              <p className="text-xl">{getEmoji(tableData['22'][0][0], tableData['22'][0][1])}</p>
+            </div>
+            <div className="w-full h-4 border flex items-center justify-center">
+              <p className="text-xs text-center">{ }</p>
+            </div>
+          </div>
         </div>
       </button>
     )
@@ -441,20 +616,29 @@ export default function Index() {
           {generateTable3()}
           {generateTable4()}
           {generateTable5()}
+          {generateTable6()}
         </div>
         <div className="flex items-center">
-          {generateTable6()}
           {generateTable7()}
           {generateTable8()}
           {generateTable9()}
           {generateTable10()}
-        </div>
-        <div className="flex items-center">
           {generateTable11()}
           {generateTable12()}
+        </div>
+        <div className="flex items-center">
           {generateTable13()}
           {generateTable14()}
           {generateTable15()}
+          {generateTable16()}
+        </div>
+        <div className="flex items-center">
+          {generateTable17()}
+          {generateTable18()}
+          {generateTable19()}
+          {generateTable20()}
+          {generateTable21()}
+          {generateTable22()}
         </div>
       </div>
     </div>
