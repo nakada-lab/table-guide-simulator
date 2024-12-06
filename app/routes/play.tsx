@@ -224,460 +224,76 @@ export default function Play() {
     );
   };
 
-
-  const generateTable1 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(1)}>
-        <p>1</p>
-        <div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['1'][0]}</p>
-          </div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['1'][1]}</p>
-          </div>
-          <div className="w-full h-4 border flex items-center justify-center">
-            <p className="text-xs text-center">{ }</p>
-          </div>
-        </div>
-      </button>
-    )
-  }
-
-  const generateTable2 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(2)}>
-        <p>2</p>
-        <div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['2'][0]}</p>
-          </div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['2'][1]}</p>
-          </div>
-          <div className="w-full h-4 border flex items-center justify-center">
-            <p className="text-xs text-center">{ }</p>
-          </div>
-        </div>
-      </button>
-    )
-  }
-
-  const generateTable3 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(3)}>
-        <p>3</p>
-        <div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['3'][0]}</p>
-          </div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['3'][1]}</p>
-          </div>
-          <div className="w-full h-4 border flex items-center justify-center">
-            <p className="text-xs text-center">{ }</p>
-          </div>
-        </div>
-      </button>
-    )
-  }
-
-  const generateTable4 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(4)}>
-        <p>4</p>
-        <div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['4'][0]}</p>
-          </div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['4'][1]}</p>
-          </div>
-          <div className="w-full h-4 border flex items-center justify-center">
-            <p className="text-xs text-center">{ }</p>
-          </div>
-        </div>
-      </button>
-    )
-  }
-
-  const generateTable5 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(5)}>
-        <p>5</p>
-        <div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['5'][0]}</p>
-          </div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['5'][1]}</p>
-          </div>
-          <div className="w-full h-4 border flex items-center justify-center">
-            <p className="text-xs text-center">{ }</p>
-          </div>
-        </div>
-      </button>
-    )
-  }
-
-  const generateTable6 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(6)}>
-        <p>6</p>
-        <div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['6'][0]}</p>
-          </div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['6'][1]}</p>
-          </div>
-          <div className="w-full h-4 border flex items-center justify-center">
-            <p className="text-xs text-center">{ }</p>
-          </div>
-        </div>
-      </button>
-    )
-  }
-
-  const generateTable7 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(7)}>
-        <p>7</p>
-        <div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['7'][0]}</p>
-          </div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['7'][1]}</p>
-          </div>
-          <div className="w-full h-4 border flex items-center justify-center">
-            <p className="text-xs text-center">{ }</p>
-          </div>
-        </div>
-      </button>
-    )
-  }
-
-  const generateTable8 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(8)}>
-        <p>8</p>
-        <div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['8'][0]}</p>
-          </div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['8'][1]}</p>
-          </div>
-          <div className="w-full h-4 border flex items-center justify-center">
-            <p className="text-xs text-center">{ }</p>
-          </div>
-        </div>
-      </button>
-    );
-  };
-
-  const generateTable9 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(9)}>
-        <p>9</p>
-        <div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['9'][0]}</p>
-          </div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['9'][1]}</p>
-          </div>
-          <div className="w-full h-4 border flex items-center justify-center">
-            <p className="text-xs text-center">{ }</p>
-          </div>
-        </div>
-      </button>
-    )
-  }
-
-  const generateTable10 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(10)}>
-        <p>10</p>
-        <div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['10'][0]}</p>
-          </div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['10'][1]}</p>
-          </div>
-          <div className="w-full h-4 border flex items-center justify-center">
-            <p className="text-xs text-center">{ }</p>
-          </div>
-        </div>
-      </button>
-    )
-  }
-
-  const generateTable11 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(11)}>
-        <p>11</p>
-        <div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['11'][0]}</p>
-          </div>
-          <div className="w-10 h-10 border flex items-center justify-center">
-            <p className="text-xl">{tableData['11'][1]}</p>
-          </div>
-          <div className="w-full h-4 border flex items-center justify-center">
-            <p className="text-xs text-center">{ }</p>
-          </div>
-        </div>
-      </button>
-    )
-  }
-
-  const generateTable12 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(12)}>
-        <p>12</p>
-        <div className="">
-          <div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['12'][0]}</p>
-            </div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['12'][1]}</p>
-            </div>
-            <div className="w-full h-4 border flex items-center justify-center">
-              <p className="text-xs text-center">{ }</p>
-            </div>
-          </div>
-        </div>
-      </button>
-    )
-  }
-
-  const generateTable13 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(13)}>
-        <p>13</p>
-        <div className="">
-          <div className="flex">
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['13'][0]}</p>
-            </div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['13'][1]}</p>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['13'][2]}</p>
-            </div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['13'][3]}</p>
-            </div>
-          </div>
-          <div className="w-full h-4 border flex items-center justify-center">
-            <p className="text-xs text-center">{ }</p>
-          </div>
-        </div>
-      </button>
-    )
-  }
-
-
-  const generateTable14 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(14)}>
-        <p>14</p>
-        <div>
-          <div className="flex">
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['14'][0]}</p>
-            </div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['14'][1]}</p>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['14'][2]}</p>
-            </div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['14'][3]}</p>
-            </div>
-          </div>
-          <div className="w-full h-4 border flex items-center justify-center">
-            <p className="text-xs text-center">{ }</p>
-          </div>
-        </div>
-      </button>
-    );
-  };
-
-  const generateTable15 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(15)}>
-        <p>15</p>
-        <div>
-          <div className="flex">
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['15'][0]}</p>
-            </div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['15'][1]}</p>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['15'][2]}</p>
-            </div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['15'][3]}</p>
-            </div>
-          </div>
-          <div className="w-full h-4 border flex items-center justify-center">
-            <p className="text-xs text-center">{ }</p>
-          </div>
-        </div>
-      </button>
-    );
-  };
-
-  const generateTable16 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(16)}>
-        <p>16</p>
-        <div>
-          <div className="flex">
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['16'][0]}</p>
-            </div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['16'][1]}</p>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['16'][2]}</p>
-            </div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['16'][3]}</p>
-            </div>
-          </div>
-          <div className="w-full h-4 border flex items-center justify-center">
-            <p className="text-xs text-center">{ }</p>
-          </div>
-        </div>
-      </button>
-    );
-  };
-
-  const generateTable17 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(17)}>
-        <p>17</p>
-        <div className="">
-          <div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['17'][0]}</p>
-            </div>
-            <div className="w-full h-4 border flex items-center justify-center">
-              <p className="text-xs text-center">{ }</p>
-            </div>
-          </div>
-        </div>
-      </button>
-    )
-  }
-
-  const generateTable18 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(18)}>
-        <p>18</p>
-        <div className="">
-          <div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['18'][0]}</p>
-            </div>
-            <div className="w-full h-4 border flex items-center justify-center">
-              <p className="text-xs text-center">{ }</p>
-            </div>
-          </div>
-        </div>
-      </button>
-    )
-  }
-
-  const generateTable19 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(19)}>
-        <p>19</p>
-        <div className="">
-          <div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['19'][0]}</p>
-            </div>
-            <div className="w-full h-4 border flex items-center justify-center">
-              <p className="text-xs text-center">{ }</p>
-            </div>
-          </div>
-        </div>
-      </button>
-    )
-  }
-
-  const generateTable20 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(20)}>
-        <p>20</p>
-        <div className="">
-          <div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['20'][0]}</p>
-            </div>
-            <div className="w-full h-4 border flex items-center justify-center">
-              <p className="text-xs text-center">{ }</p>
-            </div>
-          </div>
-        </div>
-      </button>
-    )
-  }
-
-  const generateTable21 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(21)}>
-        <p>21</p>
-        <div className="">
-          <div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['21'][0]}</p>
-            </div>
-            <div className="w-full h-4 border flex items-center justify-center">
-              <p className="text-xs text-center">{ }</p>
-            </div>
-          </div>
-        </div>
-      </button>
-    )
-  }
-
-  const generateTable22 = () => {
-    return (
-      <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(22)}>
-        <p>22</p>
-        <div className="">
-          <div>
-            <div className="w-10 h-10 border flex items-center justify-center">
-              <p className="text-xl">{tableData['22'][0]}</p>
-            </div>
-            <div className="w-full h-4 border flex items-center justify-center">
-              <p className="text-xs text-center">{ }</p>
-            </div>
-          </div>
-        </div>
-      </button>
-    )
+  const generateTable = (start: number, end: number, tableAmount: number) => {
+    const tables = []
+    for (let i: number = start; i < end + 1; i++) {
+      switch (tableAmount) {
+        case 1:
+          tables.push(
+            <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(i)} key={i}>
+              <p>{i}</p>
+              <div className="">
+                <div>
+                  <div className="w-10 h-10 border flex items-center justify-center">
+                    <p className="text-xl">{tableData[String(i)][0]}</p>
+                  </div>
+                  <div className="w-full h-4 border flex items-center justify-center">
+                    <p className="text-xs text-center">{ }</p>
+                  </div>
+                </div>
+              </div>
+            </button>
+          )
+          break;
+        case 2:
+          tables.push(
+            <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(i)} key={i}>
+              <p>{i}</p>
+              <div>
+                <div className="w-10 h-10 border flex items-center justify-center">
+                  <p className="text-xl">{tableData[String(i)][0]}</p>
+                </div>
+                <div className="w-10 h-10 border flex items-center justify-center">
+                  <p className="text-xl">{tableData[String(i)][1]}</p>
+                </div>
+                <div className="w-full h-4 border flex items-center justify-center">
+                  <p className="text-xs text-center">{ }</p>
+                </div>
+              </div>
+            </button>
+          )
+          break;
+        case 4:
+          tables.push(
+            <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(i)} key={i}>
+              <p>{i}</p>
+              <div className="">
+                <div className="flex">
+                  <div className="w-10 h-10 border flex items-center justify-center">
+                    <p className="text-xl">{tableData[String(i)][0]}</p>
+                  </div>
+                  <div className="w-10 h-10 border flex items-center justify-center">
+                    <p className="text-xl">{tableData[String(i)][1]}</p>
+                  </div>
+                </div>
+                <div className="flex">
+                  <div className="w-10 h-10 border flex items-center justify-center">
+                    <p className="text-xl">{tableData[String(i)][2]}</p>
+                  </div>
+                  <div className="w-10 h-10 border flex items-center justify-center">
+                    <p className="text-xl">{tableData[String(i)][3]}</p>
+                  </div>
+                </div>
+                <div className="w-full h-4 border flex items-center justify-center">
+                  <p className="text-xs text-center">{ }</p>
+                </div>
+              </div>
+            </button>
+          )
+          break;
+      }
+    }
+    return tables
   }
 
   return (
@@ -717,34 +333,16 @@ export default function Play() {
       <hr className="border-2 border-primary mb-4 w-full" />
       <div className="w-full flex-1 flex justify-center items-center flex-col">
         <div className="flex items-center">
-          {generateTable1()}
-          {generateTable2()}
-          {generateTable3()}
-          {generateTable4()}
-          {generateTable5()}
-          {generateTable6()}
+          {generateTable(1, 6, 2)}
         </div>
         <div className="flex items-center">
-          {generateTable7()}
-          {generateTable8()}
-          {generateTable9()}
-          {generateTable10()}
-          {generateTable11()}
-          {generateTable12()}
+          {generateTable(7, 12, 2)}
         </div>
         <div className="flex items-center">
-          {generateTable13()}
-          {generateTable14()}
-          {generateTable15()}
-          {generateTable16()}
+          {generateTable(13, 16, 4)}
         </div>
         <div className="flex items-center">
-          {generateTable17()}
-          {generateTable18()}
-          {generateTable19()}
-          {generateTable20()}
-          {generateTable21()}
-          {generateTable22()}
+          {generateTable(17, 22, 1)}
         </div>
       </div>
     </div>
