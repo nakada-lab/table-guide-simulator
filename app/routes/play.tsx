@@ -202,8 +202,10 @@ export default function Play() {
     }
 
     setTableData(prevState => {
-      const targetTableData = prevState[selectedTable] || [];
-      const targetLength = targetTableData.length;
+      const targetTableData = prevState[selectedTable] || [null, []];
+      const targetEmojiArray = targetTableData[1] || [];
+      const targetLength = targetEmojiArray.length;
+
       const paddedEmojiGroup = [
         ...emojiGroup,
         ...Array(Math.max(0, targetLength - emojiGroup.length)).fill('')
@@ -211,10 +213,11 @@ export default function Play() {
 
       return {
         ...prevState,
-        [selectedTable]: paddedEmojiGroup
+        [selectedTable]: [queue[queueIndex][2], paddedEmojiGroup]
       };
     });
 
+    console.log(queue[queueIndex][2])
     setQueue(prevState =>
       prevState.filter((_, i) => i !== queueIndex)
     );
@@ -234,7 +237,7 @@ export default function Play() {
                     <p className="text-xl">{tableData[String(i)][1][0]}</p>
                   </div>
                   <div className="w-full h-4 border flex items-center justify-center">
-                    <p className="text-xs text-center">{ }</p>
+                    <p className="text-xs text-center">{tableData[String(i)][0]}</p>
                   </div>
                 </div>
               </div>
@@ -253,7 +256,7 @@ export default function Play() {
                   <p className="text-xl">{tableData[String(i)][1][1]}</p>
                 </div>
                 <div className="w-full h-4 border flex items-center justify-center">
-                  <p className="text-xs text-center">{ }</p>
+                  <p className="text-xs text-center">{tableData[String(i)][0]}</p>
                 </div>
               </div>
             </button>
@@ -281,7 +284,7 @@ export default function Play() {
                   </div>
                 </div>
                 <div className="w-full h-4 border flex items-center justify-center">
-                  <p className="text-xs text-center">{ }</p>
+                  <p className="text-xs text-center">{tableData[String(i)][0]}</p>
                 </div>
               </div>
             </button>
