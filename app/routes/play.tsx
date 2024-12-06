@@ -191,7 +191,6 @@ export default function Play() {
   }, [selectedQueue, selectedTable]);
 
   const processSelection = (selectedQueue: string, selectedTable: string) => {
-    console.log(tableData)
     const queueIndex = queue.findIndex(item => item[0] === selectedQueue);
     const emojiGroup = queue[queueIndex][1];
 
@@ -219,7 +218,6 @@ export default function Play() {
     setQueue(prevState =>
       prevState.filter((_, i) => i !== queueIndex)
     );
-    console.log(tableData)
   };
 
   const generateTable = (start: number, end: number, tableAmount: number) => {
