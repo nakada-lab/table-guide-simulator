@@ -17,7 +17,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function Play() {
-  const tables = { 1: ['', ''], 2: ['', ''], 3: ['', ''], 4: ['', ''], 5: ['', ''], 6: ['', ''], 7: ['', ''], 8: ['', ''], 9: ['', ''], 10: ['', ''], 11: ['', ''], 12: ['', ''], 13: ['', '', '', ''], 14: ['', '', '', ''], 15: ['', '', '', ''], 16: ['', '', '', ''], 17: [''], 18: [''], 19: [''], 20: [''], 21: [''], 22: [''] }
+  const tables = { 1: [null, ['', '']], 2: [null, ['', '']], 3: [null, ['', '']], 4: [null, ['', '']], 5: [null, ['', '']], 6: [null, ['', '']], 7: [null, ['', '']], 8: [null, ['', '']], 9: [null, ['', '']], 10: [null, ['', '']], 11: [null, ['', '']], 12: [null, ['', '']], 13: [null, ['', '', '', '']], 14: [null, ['', '', '', '']], 15: [null, ['', '', '', '']], 16: [null, ['', '', '', '']], 17: [null, ['']], 18: [null, ['']], 19: [null, ['']], 20: [null, ['']], 21: [null, ['']], 22: [null, ['']] }
   const [clock, setClock] = useState(getRandomTimeInRange());
   const [playPause, setPlayPause] = useState(true);
   const [queue, setQueue] = useState<string[][]>([]);
@@ -178,10 +178,6 @@ export default function Play() {
     setIsButtonEnabled(len > 1);
   };
 
-  const handleTableClick = (index: number) => {
-    setSelectedTable(String(index));
-  };
-
   const handleDividerClick = () => {
     openDialog()
   }
@@ -195,12 +191,13 @@ export default function Play() {
   }, [selectedQueue, selectedTable]);
 
   const processSelection = (selectedQueue: string, selectedTable: string) => {
+    console.log(tableData)
     const queueIndex = queue.findIndex(item => item[0] === selectedQueue);
     const emojiGroup = queue[queueIndex][1];
 
     if (
-      emojiGroup.length > (tableData[selectedTable]?.length || 0) ||
-      tableData[selectedTable]?.some(value => value !== '')
+      emojiGroup.length > (tableData[selectedTable][1]?.length || 0) ||
+      tableData[selectedTable][1]?.some(value => value !== '')
     ) {
       return;
     }
@@ -222,6 +219,7 @@ export default function Play() {
     setQueue(prevState =>
       prevState.filter((_, i) => i !== queueIndex)
     );
+    console.log(tableData)
   };
 
   const generateTable = (start: number, end: number, tableAmount: number) => {
@@ -230,12 +228,12 @@ export default function Play() {
       switch (tableAmount) {
         case 1:
           tables.push(
-            <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(i)} key={i}>
+            <button className="m-3 flex flex-col items-center" onClick={() => setSelectedTable(String(i))} key={i}>
               <p>{i}</p>
               <div className="">
                 <div>
                   <div className="w-10 h-10 border flex items-center justify-center">
-                    <p className="text-xl">{tableData[String(i)][0]}</p>
+                    <p className="text-xl">{tableData[String(i)][1][0]}</p>
                   </div>
                   <div className="w-full h-4 border flex items-center justify-center">
                     <p className="text-xs text-center">{ }</p>
@@ -247,14 +245,14 @@ export default function Play() {
           break;
         case 2:
           tables.push(
-            <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(i)} key={i}>
+            <button className="m-3 flex flex-col items-center" onClick={() => setSelectedTable(String(i))} key={i}>
               <p>{i}</p>
               <div>
                 <div className="w-10 h-10 border flex items-center justify-center">
-                  <p className="text-xl">{tableData[String(i)][0]}</p>
+                  <p className="text-xl">{tableData[String(i)][1][0]}</p>
                 </div>
                 <div className="w-10 h-10 border flex items-center justify-center">
-                  <p className="text-xl">{tableData[String(i)][1]}</p>
+                  <p className="text-xl">{tableData[String(i)][1][1]}</p>
                 </div>
                 <div className="w-full h-4 border flex items-center justify-center">
                   <p className="text-xs text-center">{ }</p>
@@ -265,23 +263,23 @@ export default function Play() {
           break;
         case 4:
           tables.push(
-            <button className="m-3 flex flex-col items-center" onClick={() => handleTableClick(i)} key={i}>
+            <button className="m-3 flex flex-col items-center" onClick={() => setSelectedTable(String(i))} key={i}>
               <p>{i}</p>
               <div className="">
                 <div className="flex">
                   <div className="w-10 h-10 border flex items-center justify-center">
-                    <p className="text-xl">{tableData[String(i)][0]}</p>
+                    <p className="text-xl">{tableData[String(i)][1][0]}</p>
                   </div>
                   <div className="w-10 h-10 border flex items-center justify-center">
-                    <p className="text-xl">{tableData[String(i)][1]}</p>
+                    <p className="text-xl">{tableData[String(i)][1][1]}</p>
                   </div>
                 </div>
                 <div className="flex">
                   <div className="w-10 h-10 border flex items-center justify-center">
-                    <p className="text-xl">{tableData[String(i)][2]}</p>
+                    <p className="text-xl">{tableData[String(i)][1][2]}</p>
                   </div>
                   <div className="w-10 h-10 border flex items-center justify-center">
-                    <p className="text-xl">{tableData[String(i)][3]}</p>
+                    <p className="text-xl">{tableData[String(i)][1][3]}</p>
                   </div>
                 </div>
                 <div className="w-full h-4 border flex items-center justify-center">
