@@ -117,6 +117,7 @@ export default function Play() {
 
     const newQueue = [...front, ...dividedArray, ...behinde];
     setQueue(newQueue)
+    setValue(0)
   }
 
   function getRandomTimeInRange() {
