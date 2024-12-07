@@ -142,6 +142,18 @@ export default function Play() {
     if (playPause) {
       timer = setInterval(() => {
         setClock((prevClock) => new Date(prevClock.getTime() + 1000));
+        setTableData(prevState => {
+          const newState = { ...prevState };
+          for (const key in prevState) {
+            if (prevState[key][0] != null) {
+              newState[key] = [prevState[key][0] - 1, prevState[key][1]];
+              if (prevState[key][0] == 0) {
+                newState[key] = [null, tables[key][1]];
+              }
+            }
+          }
+          return newState;
+        });
         //}, simTime); FIXME: For debug
       }, 33);
     }
@@ -217,7 +229,6 @@ export default function Play() {
       };
     });
 
-    console.log(queue[queueIndex][2])
     setQueue(prevState =>
       prevState.filter((_, i) => i !== queueIndex)
     );
