@@ -154,8 +154,7 @@ export default function Play() {
           }
           return newState;
         });
-        //}, simTime); FIXME: For debug
-      }, 33);
+      }, simTime)
     }
     return () => {
       if (timer) clearInterval(timer);
