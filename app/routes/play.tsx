@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Header from "~/components/header";
 import { getEmoji } from "~/utils/myFunction";
 import data from 'app/models/data.json';
-import { ClientActionFunctionArgs, useActionData } from "@remix-run/react";
+import { ClientActionFunctionArgs, useActionData, useNavigate } from "@remix-run/react";
 import { v4 as uuidv4 } from 'uuid';
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
@@ -27,7 +27,9 @@ export default function Play() {
   const [simTime, setSimTime] = useState(1000)
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [value, setValue] = useState(0);
+  const startTimeRef = useRef(null);
   const dialogRef = useRef(null);
+  const navigate = useNavigate();
 
   const maxLength = queue[queue.findIndex(([uuid]) => uuid === selectedQueue)]?.[1]?.length ?? 0;
 
@@ -139,28 +141,36 @@ export default function Play() {
   }, [actionData]);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout | null = null;
+    let timer = null;
     if (playPause) {
       timer = setInterval(() => {
         setClock((prevClock) => new Date(prevClock.getTime() + 1000));
-        setTableData(prevState => {
+        setTableData((prevState) => {
           const newState = { ...prevState };
           for (const key in prevState) {
             if (prevState[key][0] != null) {
               newState[key] = [prevState[key][0] - 1, prevState[key][1]];
-              if (prevState[key][0] == 0) {
+              if (prevState[key][0] === 0) {
                 newState[key] = [null, tables[key][1]];
               }
             }
           }
           return newState;
         });
-      }, simTime)
+
+        if (!startTimeRef.current) {
+          startTimeRef.current = clock;
+        } else if (clock.getTime() - startTimeRef.current.getTime() >= 3600000) {
+          clearInterval(timer);
+          navigate('/score');
+        }
+      }, simTime);
     }
+
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [playPause, simTime]);
+  }, [playPause, simTime, clock, navigate]);
 
   useEffect(() => {
     if (clock.toLocaleTimeString() in data) {
