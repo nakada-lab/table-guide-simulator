@@ -118,8 +118,8 @@ export default function Play() {
     const [first, second] = splitArrayAt(queue[index][1], value);
     const front = index > 0 ? queue.slice(0, index) : [];
     const dividedArray = [
-      [queue[index][0], first, queue[index][2]],
-      [uuidv4(), second, queue[index][2]]
+      [queue[index][0], first, queue[index][2], queue[index][3]],
+      [uuidv4(), second, queue[index][2], queue[index][3]]
     ];
 
     const behinde = index < queue.length - 1 ? queue.slice(index + 1) : [];
@@ -255,12 +255,13 @@ export default function Play() {
       };
     });
 
-    setScore(score + ((clock.getTime() - new Date(queue[queueIndex][3]).getTime()) / 1000) ** 2)
+    setScore(score + (((clock.getTime() - new Date(queue[queueIndex][3]).getTime()) / 1000) ** 2))
 
     setQueue(prevState =>
       prevState.filter((_, i) => i !== queueIndex)
     );
   };
+
 
   const generateTable = (start: number, end: number, tableAmount: number) => {
     const tables = []
