@@ -8,12 +8,16 @@ import { v4 as uuidv4 } from 'uuid';
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const formData = await request.formData();
   const min = formData.get("min");
+  const name = formData.get('name');
+  const year = formData.get('year')
 
   if (!min) {
     return { error: "時間を入力してください" };
   }
 
-  return min;
+  return {
+    min: min, name: name, year: year
+  }
 }
 
 export default function Play() {
@@ -29,6 +33,8 @@ export default function Play() {
   const [value, setValue] = useState(0);
   const startTimeRef = useRef(null);
   const dialogRef = useRef(null);
+  const nameRef = useRef(null);
+  const yearRef = useRef(null);
   const navigate = useNavigate();
 
   const maxLength = queue[queue.findIndex(([uuid]) => uuid === selectedQueue)]?.[1]?.length ?? 0;
@@ -136,7 +142,10 @@ export default function Play() {
 
   useEffect(() => {
     if (actionData && !actionData.error) {
-      setSimTime(Math.floor((actionData * 1000) / 60))
+      console.log(actionData)
+      setSimTime(Math.floor((actionData['min'] * 1000) / 60))
+      nameRef.current = actionData['name']
+      yearRef.current = actionData['year']
     }
   }, [actionData]);
 
@@ -162,7 +171,12 @@ export default function Play() {
           startTimeRef.current = clock;
         } else if (clock.getTime() - startTimeRef.current.getTime() >= 3600000) {
           clearInterval(timer);
-          navigate('/score');
+          navigate('/score', {
+            state: {
+              nameRef: nameRef.current,
+              yearRef: yearRef.current
+            }
+          });
         }
       }, simTime);
     }
