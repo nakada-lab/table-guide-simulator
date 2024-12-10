@@ -2,18 +2,19 @@ import { useState, useEffect, useRef } from "react";
 import Header from "~/components/header";
 import { getEmoji } from "~/utils/myFunction";
 import data from 'app/models/data.json';
-import { ClientActionFunctionArgs, useActionData } from "@remix-run/react";
+import { ClientActionFunctionArgs, useActionData, useNavigate } from "@remix-run/react";
 import { v4 as uuidv4 } from 'uuid';
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const formData = await request.formData();
   const min = formData.get("min");
+  const name = formData.get('name');
+  const year = formData.get('year')
 
-  if (!min) {
-    return { error: "時間を入力してください" };
+
+  return {
+    min: min, name: name, year: year
   }
-
-  return min;
 }
 
 export default function Play() {
@@ -27,7 +28,13 @@ export default function Play() {
   const [simTime, setSimTime] = useState(1000)
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [value, setValue] = useState(0);
+  const [score, setScore] = useState(0);
+  const [uuid, setUuid] = useState<string>('');
+  const startTimeRef = useRef(null);
   const dialogRef = useRef(null);
+  const nameRef = useRef(null);
+  const yearRef = useRef(null);
+  const navigate = useNavigate();
 
   const maxLength = queue[queue.findIndex(([uuid]) => uuid === selectedQueue)]?.[1]?.length ?? 0;
 
@@ -109,14 +116,15 @@ export default function Play() {
     const [first, second] = splitArrayAt(queue[index][1], value);
     const front = index > 0 ? queue.slice(0, index) : [];
     const dividedArray = [
-      [queue[index][0], first, queue[index][2]],
-      [uuidv4(), second, queue[index][2]]
+      [queue[index][0], first, queue[index][2], queue[index][3]],
+      [uuidv4(), second, queue[index][2], queue[index][3]]
     ];
 
     const behinde = index < queue.length - 1 ? queue.slice(index + 1) : [];
 
     const newQueue = [...front, ...dividedArray, ...behinde];
     setQueue(newQueue)
+    setValue(0)
   }
 
   function getRandomTimeInRange() {
@@ -133,33 +141,52 @@ export default function Play() {
 
   useEffect(() => {
     if (actionData && !actionData.error) {
-      setSimTime(Math.floor((actionData * 1000) / 60))
+      setSimTime(Math.floor((actionData['min'] * 1000) / 60))
+      const uuid = uuidv4()
+      nameRef.current = actionData['name'] === '' ? uuid : actionData['name']
+      yearRef.current = actionData['year']
+      setUuid(uuid)
     }
   }, [actionData]);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout | null = null;
+    let timer = null;
     if (playPause) {
       timer = setInterval(() => {
         setClock((prevClock) => new Date(prevClock.getTime() + 1000));
-        setTableData(prevState => {
+        setTableData((prevState) => {
           const newState = { ...prevState };
           for (const key in prevState) {
             if (prevState[key][0] != null) {
               newState[key] = [prevState[key][0] - 1, prevState[key][1]];
-              if (prevState[key][0] == 0) {
+              if (prevState[key][0] === 0) {
                 newState[key] = [null, tables[key][1]];
               }
             }
           }
           return newState;
         });
-      }, simTime)
+
+        if (!startTimeRef.current) {
+          startTimeRef.current = clock;
+        } else if (clock.getTime() - startTimeRef.current.getTime() >= 3600000) {
+          clearInterval(timer);
+          navigate('/score', {
+            state: {
+              name: nameRef.current,
+              year: yearRef.current,
+              score: score,
+              uuid: uuid
+            }
+          });
+        }
+      }, simTime);
     }
+
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [playPause, simTime]);
+  }, [playPause, simTime, clock, navigate]);
 
   useEffect(() => {
     if (clock.toLocaleTimeString() in data) {
@@ -168,7 +195,7 @@ export default function Play() {
         getEmoji(i['age'], i['gender'])
       );
       if (newGroup.length > 0) {
-        setQueue((prevQueue) => [...prevQueue, [visitData['uuid'], newGroup, visitData['duration']]]);
+        setQueue((prevQueue) => [...prevQueue, [visitData['uuid'], newGroup, visitData['duration'], clock]]);
       }
     }
   }, [clock]);
@@ -182,6 +209,7 @@ export default function Play() {
     setPlayPause(true);
     setQueue([]);
     setTableData(tables)
+    setScore(0)
   };
 
   const handleQueueClick = (index: number, uuid: string, len: number) => {
@@ -228,10 +256,13 @@ export default function Play() {
       };
     });
 
+    setScore(score + (((clock.getTime() - new Date(queue[queueIndex][3]).getTime()) / 1000) ** 2))
+
     setQueue(prevState =>
       prevState.filter((_, i) => i !== queueIndex)
     );
   };
+
 
   const generateTable = (start: number, end: number, tableAmount: number) => {
     const tables = []

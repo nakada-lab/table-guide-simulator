@@ -19,23 +19,53 @@ export default function Index() {
     <div className="flex h-screen items-center justify-center">
       <Form method="post" action="/play">
         <div className="flex flex-col w-full max-w-xs">
-          <h1 className="my-5">1時間の営業を好きな時間に圧縮できます</h1>
-          <span className="label-text mb-2">何分でやる？</span>
-          <div className="flex items-center">
-            <div className="flex-1">
-              <input
-                type="text"
-                name="min"
-                min="0"
-                step="1"
-                placeholder="2"
-                className="input input-bordered w-full"
-                onInput={(e) => {
-                  e.currentTarget.value = convertToHalfWidth(e.currentTarget.value);
-                }}
-              />
+          <div className="my-5">
+            <p className=''>名前を入力</p>
+            <input className="input input-bordered  w-full"
+              type='text'
+              name='name'
+              placeholder="空白可" />
+          </div>
+          <div className="my-5">
+            <p className=''>飲食歴 (未経験は0)</p>
+            <div className="flex items-center">
+              <div className="flex-1">
+                <input
+                  type="text"
+                  name="year"
+                  min="0"
+                  step="1"
+                  placeholder="整数値"
+                  required
+                  className="input input-bordered w-full"
+                  onInput={(e) => {
+                    e.currentTarget.value = convertToHalfWidth(e.currentTarget.value);
+                  }}
+                />
+              </div>
+              <span className="ml-2">年</span>
             </div>
-            <span className="ml-2">分</span>
+          </div>
+          <div className="my-5">
+            <p className="">1時間の営業を好きな時間に圧縮できます</p>
+            <span className="label-text mb-2">何分でやる？</span>
+            <div className="flex items-center">
+              <div className="flex-1">
+                <input
+                  type="text"
+                  name="min"
+                  min="1"
+                  step="1"
+                  placeholder="2"
+                  className="input input-bordered w-full"
+                  required
+                  onInput={(e) => {
+                    e.currentTarget.value = convertToHalfWidth(e.currentTarget.value);
+                  }}
+                />
+              </div>
+              <span className="ml-2">分</span>
+            </div>
           </div>
         </div>
         <button type="submit" className="btn my-4 w-full">Play</button>

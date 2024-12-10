@@ -17,7 +17,7 @@ export default function Header({ clock, playPause, onPlayPauseToggle, onReload }
   return (
     <div className="navbar bg-primary">
       <div className="flex-1">
-        <p className="text-xl font-bold m-4">金曜日 {clock.toLocaleTimeString()}</p>
+        <p className="text-xl font-bold m-4">{clock.toLocaleTimeString()}</p>
       </div>
       <div className="flex-none btn-ghost text-4xl">
         <button className="ml-3" onClick={onPlayPauseToggle}>
