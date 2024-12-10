@@ -11,9 +11,6 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   const name = formData.get('name');
   const year = formData.get('year')
 
-  if (!min) {
-    return { error: "時間を入力してください" };
-  }
 
   return {
     min: min, name: name, year: year
@@ -32,6 +29,7 @@ export default function Play() {
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [value, setValue] = useState(0);
   const [score, setScore] = useState(0);
+  const [uuid, setUuid] = useState<string>('');
   const startTimeRef = useRef(null);
   const dialogRef = useRef(null);
   const nameRef = useRef(null);
@@ -144,8 +142,10 @@ export default function Play() {
   useEffect(() => {
     if (actionData && !actionData.error) {
       setSimTime(Math.floor((actionData['min'] * 1000) / 60))
-      nameRef.current = actionData['name']
+      const uuid = uuidv4()
+      nameRef.current = actionData['name'] === '' ? uuid : actionData['name']
       yearRef.current = actionData['year']
+      setUuid(uuid)
     }
   }, [actionData]);
 
@@ -175,7 +175,8 @@ export default function Play() {
             state: {
               name: nameRef.current,
               year: yearRef.current,
-              score: score
+              score: score,
+              uuid: uuid
             }
           });
         }
