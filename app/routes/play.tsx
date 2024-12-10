@@ -31,6 +31,7 @@ export default function Play() {
   const [simTime, setSimTime] = useState(1000)
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [value, setValue] = useState(0);
+  const [score, setScore] = useState(0);
   const startTimeRef = useRef(null);
   const dialogRef = useRef(null);
   const nameRef = useRef(null);
@@ -142,7 +143,6 @@ export default function Play() {
 
   useEffect(() => {
     if (actionData && !actionData.error) {
-      console.log(actionData)
       setSimTime(Math.floor((actionData['min'] * 1000) / 60))
       nameRef.current = actionData['name']
       yearRef.current = actionData['year']
@@ -173,8 +173,9 @@ export default function Play() {
           clearInterval(timer);
           navigate('/score', {
             state: {
-              nameRef: nameRef.current,
-              yearRef: yearRef.current
+              name: nameRef.current,
+              year: yearRef.current,
+              score: score
             }
           });
         }
@@ -193,7 +194,7 @@ export default function Play() {
         getEmoji(i['age'], i['gender'])
       );
       if (newGroup.length > 0) {
-        setQueue((prevQueue) => [...prevQueue, [visitData['uuid'], newGroup, visitData['duration']]]);
+        setQueue((prevQueue) => [...prevQueue, [visitData['uuid'], newGroup, visitData['duration'], clock]]);
       }
     }
   }, [clock]);
@@ -207,6 +208,7 @@ export default function Play() {
     setPlayPause(true);
     setQueue([]);
     setTableData(tables)
+    setScore(0)
   };
 
   const handleQueueClick = (index: number, uuid: string, len: number) => {
@@ -252,6 +254,8 @@ export default function Play() {
         [selectedTable]: [queue[queueIndex][2], paddedEmojiGroup]
       };
     });
+
+    setScore(score + ((clock.getTime() - new Date(queue[queueIndex][3]).getTime()) / 1000) ** 2)
 
     setQueue(prevState =>
       prevState.filter((_, i) => i !== queueIndex)
