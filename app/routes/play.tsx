@@ -125,6 +125,7 @@ export default function Play() {
     const newQueue = [...front, ...dividedArray, ...behinde];
     setQueue(newQueue)
     setValue(0)
+    setIsButtonEnabled(false)
   }
 
   function getRandomTimeInRange() {
@@ -261,6 +262,7 @@ export default function Play() {
     setQueue(prevState =>
       prevState.filter((_, i) => i !== queueIndex)
     );
+    setIsButtonEnabled(false)
   };
 
 
