@@ -154,6 +154,7 @@ export default function Play() {
 
   useEffect(() => {
     let timer = null;
+
     if (playPause) {
       timer = setInterval(() => {
         setClock((prevClock) => new Date(prevClock.getTime() + 1000));
@@ -173,30 +174,26 @@ export default function Play() {
         if (!startTimeRef.current) {
           startTimeRef.current = clock;
         } else if (clock.getTime() - startTimeRef.current.getTime() >= 3600000) {
-          clearInterval(timer);
-          insertScore()
-          navigate('/score', {
-            state: {
-              name: nameRef.current,
-              year: yearRef.current,
-              score: score,
-              uuid: uuid
-            }
-          });
+          if (!executedRef.current) {
+            insertScore().then(() => {
+              clearInterval(timer);
+              navigate('/score', { state: { uuid: uuid } });
+            });
+          }
         }
       }, simTime);
     }
 
     const insertScore = async () => {
       if (executedRef.current) return;
+      executedRef.current = true;
       const { data, error } = await supabase
         .from('score')
         .insert([
           { uuid: uuid, name: nameRef.current, year: yearRef.current, score: score },
         ])
         .select();
-      executedRef.current = true;
-    };
+    }
 
     return () => {
       if (timer) clearInterval(timer);
