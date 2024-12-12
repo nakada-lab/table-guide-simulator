@@ -24,7 +24,7 @@ export default function Index() {
             <input className="input input-bordered  w-full"
               type='text'
               name='name'
-              placeholder="空白の場合はランダム値" />
+              placeholder="空白可" />
           </div>
           <div className="my-5">
             <p className=''>飲食歴 (未経験は0)</p>
