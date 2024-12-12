@@ -1,40 +1,22 @@
-# Welcome to Remix!
+# Table Guide Simulator
 
-- 📖 [Remix docs](https://remix.run/docs)
+🔗 Application URL: https://nakada-lab.github.io/table-guide-simulator/
+📱 Note: This application is optimized for mobile devices.
 
-## Development
+## Project Overview
 
-Run the dev server:
+This simulator serves as a research tool for collecting data on human decision-making patterns in restaurant guest seating scenarios. The data gathered will be used to benchmark human performance against an AI-optimized seating efficiency model as part of a graduation research project.
 
-```shellscript
-npm run dev
-```
+## Purpose
 
-## Deployment
+The application fulfills two key objectives:
 
-First, build your app for production:
+1. Simulates real-world restaurant guest seating scenarios
+2. Captures quantitative data on human seating allocation decisions for comparative analysis with AI models.
 
-```sh
-npm run build
-```
+## Technology Stack
 
-Then run the app in production mode:
-
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
+- Framework: Built with Remix for robust full-stack development
+- UI Components: Implements Daisy UI library for enhanced accessibility and rapid development
+- Database: Powered by Supabase for reliable data management
+- Deployment: Automated deployment pipeline using GitHub Actions
