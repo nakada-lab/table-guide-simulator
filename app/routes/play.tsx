@@ -4,6 +4,7 @@ import { getEmoji } from "~/utils/myFunction";
 import data from 'app/models/data.json';
 import { ClientActionFunctionArgs, useActionData, useNavigate } from "@remix-run/react";
 import { v4 as uuidv4 } from 'uuid';
+import { supabase } from "~/utils/supabase";
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const formData = await request.formData();
@@ -34,6 +35,7 @@ export default function Play() {
   const dialogRef = useRef(null);
   const nameRef = useRef(null);
   const yearRef = useRef(null);
+  const executedRef = useRef(false)
   const navigate = useNavigate();
 
   const maxLength = queue[queue.findIndex(([uuid]) => uuid === selectedQueue)]?.[1]?.length ?? 0;
@@ -146,7 +148,7 @@ export default function Play() {
       const uuid = uuidv4()
       nameRef.current = actionData['name'] === '' ? uuid : actionData['name']
       yearRef.current = actionData['year']
-      setUuid(uuid?.split('-')[0] ?? '')
+      setUuid(uuid)
     }
   }, [actionData]);
 
@@ -172,6 +174,7 @@ export default function Play() {
           startTimeRef.current = clock;
         } else if (clock.getTime() - startTimeRef.current.getTime() >= 3600000) {
           clearInterval(timer);
+          insertScore()
           navigate('/score', {
             state: {
               name: nameRef.current,
@@ -183,6 +186,17 @@ export default function Play() {
         }
       }, simTime);
     }
+
+    const insertScore = async () => {
+      if (executedRef.current) return;
+      const { data, error } = await supabase
+        .from('score')
+        .insert([
+          { uuid: uuid, name: nameRef.current, year: yearRef.current, score: score },
+        ])
+        .select();
+      executedRef.current = true;
+    };
 
     return () => {
       if (timer) clearInterval(timer);
