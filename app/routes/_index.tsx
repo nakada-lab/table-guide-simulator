@@ -52,7 +52,7 @@ export default function Index() {
             <div className="flex items-center">
               <div className="flex-1">
                 <input
-                  type="text"
+                  type="number"
                   name="min"
                   min="1"
                   step="1"
