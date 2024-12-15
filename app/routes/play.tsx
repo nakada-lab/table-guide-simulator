@@ -128,7 +128,7 @@ export default function Play() {
 
     const newQueue = [...front, ...dividedArray, ...behinde];
     setQueue(newQueue)
-    setValue(0)
+    setValue(1)
     setIsButtonEnabled(false)
   }
 
