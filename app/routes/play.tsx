@@ -29,7 +29,7 @@ export default function Play() {
   const [simTime, setSimTime] = useState(1000)
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [value, setValue] = useState(1);
-  const [score, setScore] = useState<Date[]>([])
+  const [score, setScore] = useState<number[]>([])
   const [uuid, setUuid] = useState<string>('');
   const startTimeRef = useRef(null);
   const dialogRef = useRef(null);
@@ -203,22 +203,17 @@ export default function Play() {
     const { data: scoreData, error: scoreError } = await supabase
       .from('score')
       .insert([
-        { uuid: uuid, name: nameRef.current, year: yearRef.current, score: calScore() },
+        { uuid: uuid, name: nameRef.current, year: yearRef.current, score: Math.round([...score, ...queue.map((s) => s[4])].reduce((acc, val) => acc + val, 0) / [...score, ...queue.map((s) => s[4])].length), duration: [...score, ...queue.map((s) => s[4])] },
       ])
-      .select();
-
-    const { data: durationData, error: durationError } = await supabase
-      .from('duration')
-      .insert(
-        {
-          uuid: uuid,
-          duration: score
-        })
       .select();
   }
 
   const calScore = () => {
     setScore(prevState => [...prevState, ...queue.map(i => i[4])])
+    return calcAve
+  }
+
+  const calcAve = () => {
     return Math.round(score.reduce((acc, val) => acc + val, 0) / score.length)
   }
 
