@@ -226,7 +226,7 @@ export default function Play() {
         getEmoji(i['age'], i['gender'])
       );
       if (newGroup.length > 0) {
-        setQueue((prevQueue) => [...prevQueue, [visitData['uuid'], newGroup, visitData['duration'] / 2, clock]]);
+        setQueue((prevQueue) => [...prevQueue, [visitData['uuid'], newGroup, Math.round(visitData['duration'] / 3), clock]]);
       }
     }
   }, [clock]);
