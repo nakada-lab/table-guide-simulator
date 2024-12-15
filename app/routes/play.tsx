@@ -28,7 +28,7 @@ export default function Play() {
   const [tableData, setTableData] = useState<{ [key: string]: any[] }>(tables);
   const [simTime, setSimTime] = useState(1000)
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(1);
   const [score, setScore] = useState<Date[]>([])
   const [uuid, setUuid] = useState<string>('');
   const startTimeRef = useRef(null);
@@ -45,7 +45,7 @@ export default function Play() {
   };
 
   const handleDecrease = () => {
-    setValue(prev => Math.max(0, prev - 1));
+    setValue(prev => Math.max(1, prev - 1));
   };
 
   const openDialog = () => {
@@ -80,6 +80,8 @@ export default function Play() {
                   type="number"
                   value={value}
                   readOnly
+                  min="1"
+                  max={maxLength - 1}
                   className="w-16 text-center border-y"
                 />
                 <button
