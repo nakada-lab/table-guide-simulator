@@ -28,7 +28,7 @@ export default function Play() {
   const [tableData, setTableData] = useState<{ [key: string]: any[] }>(tables);
   const [simTime, setSimTime] = useState(1000)
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(1);
   const [score, setScore] = useState<Date[]>([])
   const [uuid, setUuid] = useState<string>('');
   const startTimeRef = useRef(null);
@@ -45,7 +45,7 @@ export default function Play() {
   };
 
   const handleDecrease = () => {
-    setValue(prev => Math.max(0, prev - 1));
+    setValue(prev => Math.max(1, prev - 1));
   };
 
   const openDialog = () => {
@@ -80,6 +80,8 @@ export default function Play() {
                   type="number"
                   value={value}
                   readOnly
+                  min="1"
+                  max={maxLength - 1}
                   className="w-16 text-center border-y"
                 />
                 <button
@@ -118,8 +120,8 @@ export default function Play() {
     const [first, second] = splitArrayAt(queue[index][1], value);
     const front = index > 0 ? queue.slice(0, index) : [];
     const dividedArray = [
-      [queue[index][0], first, queue[index][2], queue[index][3]],
-      [uuidv4(), second, queue[index][2], queue[index][3]]
+      [queue[index][0], first, queue[index][2], queue[index][3], queue[index][4]],
+      [uuidv4(), second, queue[index][2], queue[index][3], queue[index][4]]
     ];
 
     const behinde = index < queue.length - 1 ? queue.slice(index + 1) : [];
@@ -171,6 +173,12 @@ export default function Play() {
           return newState;
         });
 
+        setQueue(prevQueue =>
+          prevQueue.map(item => [
+            item[0], item[1], item[2], item[3], item[4] + 1
+          ])
+        );
+
         if (!startTimeRef.current) {
           startTimeRef.current = clock;
         } else if (clock.getTime() - startTimeRef.current.getTime() >= 3600000) {
@@ -202,21 +210,16 @@ export default function Play() {
     const { data: durationData, error: durationError } = await supabase
       .from('duration')
       .insert(
-        score.map(item => ({
+        {
           uuid: uuid,
-          visit: item[0],
-          guided: item[1]
-        }))
-      )
+          duration: score
+        })
       .select();
   }
 
   const calScore = () => {
-    const tmp = []
-    for (const i of score) {
-      tmp.push((i[1] - i[0]) / 1000)
-    }
-    return Math.round(tmp.reduce((acc, val) => acc + val, 0) / tmp.length)
+    setScore(prevState => [...prevState, ...queue.map(i => i[4])])
+    return Math.round(score.reduce((acc, val) => acc + val, 0) / score.length)
   }
 
   useEffect(() => {
@@ -226,7 +229,7 @@ export default function Play() {
         getEmoji(i['age'], i['gender'])
       );
       if (newGroup.length > 0) {
-        setQueue((prevQueue) => [...prevQueue, [visitData['uuid'], newGroup, visitData['duration'], clock]]);
+        setQueue((prevQueue) => [...prevQueue, [visitData['uuid'], newGroup, Math.round(visitData['duration'] / 3), clock, 0]]);
       }
     }
   }, [clock]);
@@ -287,7 +290,8 @@ export default function Play() {
       };
     });
 
-    setScore(prevState => [...prevState, [new Date(queue[queueIndex][3]).getTime(), clock.getTime()]])
+    //setScore(prevState => [...prevState, [new Date(queue[queueIndex][3]).getTime(), clock.getTime()]])
+    setScore(prevState => [...prevState, queue[queueIndex][4]])
 
     setQueue(prevState =>
       prevState.filter((_, i) => i !== queueIndex)
