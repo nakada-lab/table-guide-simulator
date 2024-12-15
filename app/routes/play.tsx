@@ -29,7 +29,7 @@ export default function Play() {
   const [simTime, setSimTime] = useState(1000)
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [value, setValue] = useState(0);
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState<Date[]>([])
   const [uuid, setUuid] = useState<string>('');
   const startTimeRef = useRef(null);
   const dialogRef = useRef(null);
@@ -184,21 +184,40 @@ export default function Play() {
       }, simTime);
     }
 
-    const insertScore = async () => {
-      if (executedRef.current) return;
-      executedRef.current = true;
-      const { data, error } = await supabase
-        .from('score')
-        .insert([
-          { uuid: uuid, name: nameRef.current, year: yearRef.current, score: score },
-        ])
-        .select();
-    }
-
     return () => {
       if (timer) clearInterval(timer);
     };
   }, [playPause, simTime, clock, navigate]);
+
+  const insertScore = async () => {
+    if (executedRef.current) return;
+    executedRef.current = true;
+    const { data: scoreData, error: scoreError } = await supabase
+      .from('score')
+      .insert([
+        { uuid: uuid, name: nameRef.current, year: yearRef.current, score: calScore() },
+      ])
+      .select();
+
+    const { data: durationData, error: durationError } = await supabase
+      .from('duration')
+      .insert(
+        score.map(item => ({
+          uuid: uuid,
+          visit: item[0],
+          guided: item[1]
+        }))
+      )
+      .select();
+  }
+
+  const calScore = () => {
+    const tmp = []
+    for (const i of score) {
+      tmp.push((i[1] - i[0]) / 1000)
+    }
+    return Math.round(tmp.reduce((acc, val) => acc + val, 0) / tmp.length)
+  }
 
   useEffect(() => {
     if (clock.toLocaleTimeString() in data) {
@@ -221,7 +240,7 @@ export default function Play() {
     setPlayPause(true);
     setQueue([]);
     setTableData(tables)
-    setScore(0)
+    setScore([])
   };
 
   const handleQueueClick = (index: number, uuid: string, len: number) => {
@@ -268,7 +287,7 @@ export default function Play() {
       };
     });
 
-    setScore(score + (((clock.getTime() - new Date(queue[queueIndex][3]).getTime()) / 1000) ** 2))
+    setScore(prevState => [...prevState, [new Date(queue[queueIndex][3]).getTime(), clock.getTime()]])
 
     setQueue(prevState =>
       prevState.filter((_, i) => i !== queueIndex)
