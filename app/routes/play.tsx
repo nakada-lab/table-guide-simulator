@@ -203,17 +203,8 @@ export default function Play() {
     const { data: scoreData, error: scoreError } = await supabase
       .from('score')
       .insert([
-        { uuid: uuid, name: nameRef.current, year: yearRef.current, score: calScore() },
+        { uuid: uuid, name: nameRef.current, year: yearRef.current, score: calScore(), duration: score },
       ])
-      .select();
-
-    const { data: durationData, error: durationError } = await supabase
-      .from('duration')
-      .insert(
-        {
-          uuid: uuid,
-          duration: score
-        })
       .select();
   }
 
