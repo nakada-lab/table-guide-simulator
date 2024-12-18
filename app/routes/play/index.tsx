@@ -1,5 +1,5 @@
 import Dialog from "./Dialog";
-import Header from "./header";
+import Header from "./Header";
 import TableGenerator from "./Table";
 import data from 'app/models/data.json';
 import { ClientActionFunctionArgs, useActionData, useNavigate } from "@remix-run/react";
