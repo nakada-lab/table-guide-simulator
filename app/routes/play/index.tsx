@@ -5,6 +5,7 @@ import data from 'app/models/data.json';
 import { ClientActionFunctionArgs, useActionData, useNavigate } from "@remix-run/react";
 import { v4 as uuidv4 } from 'uuid';
 import { supabase } from "~/utils/supabase";
+import TableGenerator from "./Table";
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const formData = await request.formData();
@@ -19,7 +20,13 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function Play() {
-  const tables = { 1: [null, ['', '']], 2: [null, ['', '']], 3: [null, ['', '']], 4: [null, ['', '']], 5: [null, ['', '']], 6: [null, ['', '']], 7: [null, ['', '']], 8: [null, ['', '']], 9: [null, ['', '']], 10: [null, ['', '']], 11: [null, ['', '']], 12: [null, ['', '']], 13: [null, ['', '', '', '']], 14: [null, ['', '', '', '']], 15: [null, ['', '', '', '']], 16: [null, ['', '', '', '']], 17: [null, ['']], 18: [null, ['']], 19: [null, ['']], 20: [null, ['']], 21: [null, ['']], 22: [null, ['']] }
+  const tableDefinitions = [
+    { start: 1, end: 6, tableAmount: 2 },
+    { start: 7, end: 12, tableAmount: 2 },
+    { start: 13, end: 16, tableAmount: 4 },
+    { start: 17, end: 22, tableAmount: 1 },
+  ]
+  const tables = generateTables(tableDefinitions)
   const [clock, setClock] = useState(getRandomTimeInRange());
   const [playPause, setPlayPause] = useState(true);
   const [queue, setQueue] = useState<string[][]>([]);
@@ -37,6 +44,32 @@ export default function Play() {
   const yearRef = useRef(null);
   const executedRef = useRef(false)
   const navigate = useNavigate();
+
+
+  function generateTables(definitions) {
+    const tables = {};
+    definitions.forEach(({ start, end, tableAmount }) => {
+      for (let i = start; i <= end; i++) {
+        const emptyTable = Array(tableAmount).fill('')
+        tables[i] = [null, emptyTable]
+      }
+    });
+    return tables
+  }
+
+  function generateTableElements(tableDefinitions) {
+    return tableDefinitions.map(({ start, end, tableAmount }) => (
+      <div key={`${start}-${end}`} className="flex items-center">
+        <TableGenerator
+          start={start}
+          end={end}
+          tableAmount={tableAmount}
+          tableData={tableData}
+          setSelectedTable={setSelectedTable}
+        />
+      </div>
+    ));
+  }
 
   const maxLength = queue[queue.findIndex(([uuid]) => uuid === selectedQueue)]?.[1]?.length ?? 0;
 
@@ -189,7 +222,8 @@ export default function Play() {
             });
           }
         }
-      }, simTime);
+        //}, simTime);
+      }, 10);
     }
 
     return () => {
@@ -294,79 +328,6 @@ export default function Play() {
     setIsButtonEnabled(false)
   };
 
-
-  const generateTable = (start: number, end: number, tableAmount: number) => {
-    const tables = []
-    for (let i: number = start; i < end + 1; i++) {
-      switch (tableAmount) {
-        case 1:
-          tables.push(
-            <button className="m-3 flex flex-col items-center" onClick={() => setSelectedTable(String(i))} key={i}>
-              <p>{i}</p>
-              <div className="">
-                <div>
-                  <div className="w-10 h-10 border flex items-center justify-center">
-                    <p className="text-xl">{tableData[String(i)][1][0]}</p>
-                  </div>
-                  <div className="w-full h-4 border flex items-center justify-center">
-                    <p className="text-xs text-center">{tableData[String(i)][0]}</p>
-                  </div>
-                </div>
-              </div>
-            </button>
-          )
-          break;
-        case 2:
-          tables.push(
-            <button className="m-3 flex flex-col items-center" onClick={() => setSelectedTable(String(i))} key={i}>
-              <p>{i}</p>
-              <div>
-                <div className="w-10 h-10 border flex items-center justify-center">
-                  <p className="text-xl">{tableData[String(i)][1][0]}</p>
-                </div>
-                <div className="w-10 h-10 border flex items-center justify-center">
-                  <p className="text-xl">{tableData[String(i)][1][1]}</p>
-                </div>
-                <div className="w-full h-4 border flex items-center justify-center">
-                  <p className="text-xs text-center">{tableData[String(i)][0]}</p>
-                </div>
-              </div>
-            </button>
-          )
-          break;
-        case 4:
-          tables.push(
-            <button className="m-3 flex flex-col items-center" onClick={() => setSelectedTable(String(i))} key={i}>
-              <p>{i}</p>
-              <div className="">
-                <div className="flex">
-                  <div className="w-10 h-10 border flex items-center justify-center">
-                    <p className="text-xl">{tableData[String(i)][1][0]}</p>
-                  </div>
-                  <div className="w-10 h-10 border flex items-center justify-center">
-                    <p className="text-xl">{tableData[String(i)][1][1]}</p>
-                  </div>
-                </div>
-                <div className="flex">
-                  <div className="w-10 h-10 border flex items-center justify-center">
-                    <p className="text-xl">{tableData[String(i)][1][2]}</p>
-                  </div>
-                  <div className="w-10 h-10 border flex items-center justify-center">
-                    <p className="text-xl">{tableData[String(i)][1][3]}</p>
-                  </div>
-                </div>
-                <div className="w-full h-4 border flex items-center justify-center">
-                  <p className="text-xs text-center">{tableData[String(i)][0]}</p>
-                </div>
-              </div>
-            </button>
-          )
-          break;
-      }
-    }
-    return tables
-  }
-
   return (
     <div className="flex h-screen items-center justify-center flex-col">
       <div className="w-full h-1/4 flex flex-col relative">
@@ -403,18 +364,7 @@ export default function Play() {
       </div>
       <hr className="border-2 border-primary mb-4 w-full" />
       <div className="w-full flex-1 flex justify-center items-center flex-col">
-        <div className="flex items-center">
-          {generateTable(1, 6, 2)}
-        </div>
-        <div className="flex items-center">
-          {generateTable(7, 12, 2)}
-        </div>
-        <div className="flex items-center">
-          {generateTable(13, 16, 4)}
-        </div>
-        <div className="flex items-center">
-          {generateTable(17, 22, 1)}
-        </div>
+        {generateTableElements(tableDefinitions)}
       </div>
     </div>
   );
