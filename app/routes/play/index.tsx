@@ -6,6 +6,7 @@ import { ClientActionFunctionArgs, useActionData, useNavigate } from "@remix-run
 import { v4 as uuidv4 } from 'uuid';
 import { supabase } from "~/utils/supabase";
 import TableGenerator from "./Table";
+import Dialog from "./Dialog";
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const formData = await request.formData();
@@ -69,77 +70,6 @@ export default function Play() {
         />
       </div>
     ));
-  }
-
-  const maxLength = queue[queue.findIndex(([uuid]) => uuid === selectedQueue)]?.[1]?.length ?? 0;
-
-  const handleIncrease = () => {
-    setValue(prev => Math.min(maxLength, prev + 1));
-  };
-
-  const handleDecrease = () => {
-    setValue(prev => Math.max(1, prev - 1));
-  };
-
-  const openDialog = () => {
-    if (dialogRef.current) {
-      dialogRef.current.showModal();
-    }
-  };
-
-  const closeDialog = () => {
-    if (dialogRef.current) {
-      dialogRef.current.close();
-    }
-  };
-
-  const createDialog = () => {
-    return (
-      <dialog ref={dialogRef} id="my_modal_1" className="modal">
-        <div className="modal-box">
-          <p className="">{queue[queue.findIndex(([uuid]) => uuid === selectedQueue)]?.[1]?.length ?? null}人をどう分ける？</p>
-          <div className="modal-action">
-            <div className="w-full flex items-center justify-center flex-col">
-              <div className="w-full flex items-center pb-10 justify-center">
-                <button
-                  type="button"
-                  onClick={handleDecrease}
-                  className="px-3 py-1 border rounded-l"
-                  disabled={value <= 0}
-                >
-                  -
-                </button>
-                <input
-                  type="number"
-                  value={value}
-                  readOnly
-                  min="1"
-                  max={maxLength - 1}
-                  className="w-16 text-center border-y"
-                />
-                <button
-                  type="button"
-                  onClick={handleIncrease}
-                  className="px-3 py-1 border rounded-r"
-                  disabled={value >= maxLength - 1}
-                >
-                  +
-                </button>
-                <p className="ml-5">と</p>
-                <p className="ml-5">{queue[queue.findIndex(([uuid]) => uuid === selectedQueue)]?.[1]?.length - value}人</p>
-              </div>
-              <form method="dialog" className="w-full flex items-center justify-center">
-                <button className="btn bg-neutral">
-                  閉じる
-                </button>
-                <div className="flex-1"></div>
-                <button className="btn bg-primary" onClick={() => divider(queue.findIndex(([uuid]) => uuid === selectedQueue))}>分ける</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </dialog>
-    )
   }
 
   const splitArrayAt = (array: string[], n: number): [string[], string[]] => {
@@ -242,15 +172,6 @@ export default function Play() {
       .select();
   }
 
-  const calScore = () => {
-    setScore(prevState => [...prevState, ...queue.map(i => i[4])])
-    return calcAve
-  }
-
-  const calcAve = () => {
-    return Math.round(score.reduce((acc, val) => acc + val, 0) / score.length)
-  }
-
   useEffect(() => {
     if (clock.toLocaleTimeString() in data) {
       const visitData = data[clock.toLocaleTimeString()];
@@ -262,10 +183,6 @@ export default function Play() {
       }
     }
   }, [clock]);
-
-  const handlePlayPauseToggle = () => {
-    setPlayPause(!playPause);
-  };
 
   const handleReload = () => {
     setClock(getRandomTimeInRange());
@@ -279,10 +196,6 @@ export default function Play() {
     setSelectedQueue(uuid);
     setIsButtonEnabled(len > 1);
   };
-
-  const handleDividerClick = () => {
-    openDialog()
-  }
 
   useEffect(() => {
     if (selectedQueue && selectedTable) {
@@ -334,7 +247,7 @@ export default function Play() {
         <Header
           clock={clock}
           playPause={playPause}
-          onPlayPauseToggle={handlePlayPauseToggle}
+          onPlayPauseToggle={() => { setPlayPause(!playPause); }}
           onReload={handleReload}
         />
         <div className="w-full max-h-full flex flex-wrap overflow-y-auto">
@@ -351,12 +264,23 @@ export default function Play() {
               <p className="text-xs absolute bottom-0 right-0">{item[1].length}</p>
             </button>
           ))}
-          {createDialog()}
+          <Dialog
+            dialogRef={dialogRef}
+            queue={queue}
+            selectedQueue={selectedQueue}
+            divider={divider}
+            value={value}
+            setValue={setValue}
+          />
           <button
             className={`btn absolute bottom-0 right-0 z-10 m-1 text-xs ${!isButtonEnabled ? 'opacity-50 cursor-not-allowed' : ''
               }`}
             disabled={!isButtonEnabled}
-            onClick={() => handleDividerClick()}
+            onClick={() => {
+              if (dialogRef.current) {
+                dialogRef.current.showModal();
+              }
+            }}
           >
             分ける
           </button>
