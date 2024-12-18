@@ -1,12 +1,12 @@
-import { useState, useEffect, useRef } from "react";
-import Header from "~/components/header";
-import { getEmoji } from "~/utils/myFunction";
+import Dialog from "./Dialog";
+import Header from "./header";
+import TableGenerator from "./Table";
 import data from 'app/models/data.json';
 import { ClientActionFunctionArgs, useActionData, useNavigate } from "@remix-run/react";
-import { v4 as uuidv4 } from 'uuid';
+import { getEmoji } from "~/utils/myFunction";
 import { supabase } from "~/utils/supabase";
-import TableGenerator from "./Table";
-import Dialog from "./Dialog";
+import { useState, useEffect, useRef } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const formData = await request.formData();
