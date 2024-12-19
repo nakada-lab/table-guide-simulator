@@ -139,6 +139,7 @@ export default function Play() {
         if (!startTimeRef.current) {
           startTimeRef.current = clock;
         } else if (clock.getTime() - startTimeRef.current.getTime() >= 3600000) {
+          console.log(leave)
           if (!executedRef.current) {
             insertScore().then(() => {
               clearInterval(timer);
@@ -146,14 +147,13 @@ export default function Play() {
             });
           }
         }
-        //}, simTime); FIXME: uncomment
-      }, 10);
+      }, simTime);
     }
 
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [playPause, simTime, clock, navigate]);
+  }, [playPause, simTime, clock, navigate, selectedQueue, selectedTable]);
 
   const insertScore = async () => {
     if (executedRef.current) return;
@@ -171,7 +171,7 @@ export default function Play() {
       const lim = Math.floor(Math.random() * (30 - 16)) + 15;
       if (queue.length >= lim) {
         setLeave(prevLeave => [prevLeave[0], prevLeave[1] + 1]);
-        console.log('leave')
+        setScore(prevState => [...prevState, 1200])
         return
       } else {
         const visitData = data[clock.toLocaleTimeString()];
@@ -192,6 +192,7 @@ export default function Play() {
       const newQueue = queue.filter(item => item[5][0] < item[5][1]);
       setQueue(newQueue);
       setLeave(prevLeave => [prevLeave[0] + 1, prevLeave[1]]);
+      setScore(prevState => [...prevState, 600])
     }
   }, [queue, selectedQueue, selectedTable]);
 
@@ -261,6 +262,7 @@ export default function Play() {
           playPause={playPause}
           onPlayPauseToggle={() => { setPlayPause(!playPause); }}
           onReload={handleReload}
+          score={score}
         />
         <div className="w-full max-h-full flex flex-wrap overflow-y-auto">
           {queue.map((item, index) => (
