@@ -140,7 +140,6 @@ export default function Play() {
         if (!startTimeRef.current) {
           startTimeRef.current = clock;
         } else if (clock.getTime() - startTimeRef.current.getTime() >= 3600000) {
-          console.log(leave)
           if (!executedRef.current) {
             insertScore().then(() => {
               clearInterval(timer);
@@ -162,7 +161,7 @@ export default function Play() {
     const { data: scoreData, error: scoreError } = await supabase
       .from('score')
       .insert([
-        { uuid: uuid, name: nameRef.current, year: yearRef.current, score: Math.round([...score, ...queue.map((s) => s[4])].reduce((acc, val) => acc + val, 0) / [...score, ...queue.map((s) => s[4])].length), duration: [...score, ...queue.map((s) => s[4])] },
+        { uuid: uuid, name: nameRef.current, year: yearRef.current, score: Math.round([...score, ...queue.map((s) => s[4])].reduce((acc, val) => acc + val, 0) / [...score, ...queue.map((s) => s[4])].length), duration: [...score, ...queue.map((s) => s[4])], leave: leave },
       ])
       .select();
   }
