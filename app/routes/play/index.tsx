@@ -38,6 +38,7 @@ export default function Play() {
   const [value, setValue] = useState(1);
   const [score, setScore] = useState<number[]>([])
   const [uuid, setUuid] = useState<string>('');
+  const [leave, setLeave] = useState([0, 0])
   const startTimeRef = useRef(null);
   const dialogRef = useRef(null);
   const nameRef = useRef(null);
@@ -76,7 +77,7 @@ export default function Play() {
     const [first, second] = splitArrayAt(queue[index][1], value);
     const front = index > 0 ? queue.slice(0, index) : [];
     const dividedArray = [
-      [queue[index][0], first, queue[index][2], queue[index][3], queue[index][4]], queue[index][5],
+      [queue[index][0], first, queue[index][2], queue[index][3], queue[index][4], queue[index][5]],
       [uuidv4(), second, queue[index][2], queue[index][3], queue[index][4], queue[index][5]]
     ];
 
@@ -174,9 +175,18 @@ export default function Play() {
       if (newGroup.length > 0) {
         setQueue((prevQueue) => [...prevQueue, [visitData['uuid'], newGroup, Math.round(visitData['duration'] / 3), clock, 0, [0, Math.round(Math.random() * 59 * 60 + Math.random() * 59)]]]);
       }
-      console.log(queue)
     }
   }, [clock]);
+
+  useEffect(() => {
+    const hasItemToRemove = queue.some(item => item[5][0] >= item[5][1]);
+
+    if (hasItemToRemove) {
+      const newQueue = queue.filter(item => item[5][0] < item[5][1]);
+      setQueue(newQueue);
+      setLeave(prevLeave => [prevLeave[0] + 1, prevLeave[1]]);
+    }
+  }, [queue]);
 
   const handleReload = () => {
     setClock(getRandomTimeInRange());
