@@ -14,7 +14,6 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   const name = formData.get('name');
   const year = formData.get('year')
 
-
   return {
     min: min, name: name, year: year
   }
@@ -30,7 +29,7 @@ export default function Play() {
   const tables = generateTables(tableDefinitions)
   const [clock, setClock] = useState(getRandomTimeInRange());
   const [playPause, setPlayPause] = useState(true);
-  const [queue, setQueue] = useState<string[][]>([]);
+  const [queue, setQueue] = useState([]);
   const [selectedQueue, setSelectedQueue] = useState<string>('');
   const [selectedTable, setSelectedTable] = useState<string>('');
   const [tableData, setTableData] = useState<{ [key: string]: any[] }>(tables);
@@ -45,7 +44,6 @@ export default function Play() {
   const yearRef = useRef(null);
   const executedRef = useRef(false)
   const navigate = useNavigate();
-
 
   function generateTables(definitions) {
     const tables = {};
@@ -72,19 +70,14 @@ export default function Play() {
     ));
   }
 
-  const splitArrayAt = (array: string[], n: number): [string[], string[]] => {
-    const firstPart = array.slice(0, n);
-    const secondPart = array.slice(n);
-    return [firstPart, secondPart];
-  };
-
+  const splitArrayAt = (array, n) => [array.slice(0, n), array.slice(n)];
 
   const divider = (index: number) => {
     const [first, second] = splitArrayAt(queue[index][1], value);
     const front = index > 0 ? queue.slice(0, index) : [];
     const dividedArray = [
-      [queue[index][0], first, queue[index][2], queue[index][3], queue[index][4]],
-      [uuidv4(), second, queue[index][2], queue[index][3], queue[index][4]]
+      [queue[index][0], first, queue[index][2], queue[index][3], queue[index][4]], queue[index][5],
+      [uuidv4(), second, queue[index][2], queue[index][3], queue[index][4], queue[index][5]]
     ];
 
     const behinde = index < queue.length - 1 ? queue.slice(index + 1) : [];
@@ -138,7 +131,7 @@ export default function Play() {
 
         setQueue(prevQueue =>
           prevQueue.map(item => [
-            item[0], item[1], item[2], item[3], item[4] + 1
+            item[0], item[1], item[2], item[3], item[4] + 1, [item[5][0] + 1, item[5][1]]
           ])
         );
 
@@ -152,7 +145,7 @@ export default function Play() {
             });
           }
         }
-        //}, simTime);
+        //}, simTime); FIXME: uncomment
       }, 10);
     }
 
@@ -179,8 +172,9 @@ export default function Play() {
         getEmoji(i['age'], i['gender'])
       );
       if (newGroup.length > 0) {
-        setQueue((prevQueue) => [...prevQueue, [visitData['uuid'], newGroup, Math.round(visitData['duration'] / 3), clock, 0]]);
+        setQueue((prevQueue) => [...prevQueue, [visitData['uuid'], newGroup, Math.round(visitData['duration'] / 3), clock, 0, [0, Math.round(Math.random() * 59 * 60 + Math.random() * 59)]]]);
       }
+      console.log(queue)
     }
   }, [clock]);
 
@@ -241,6 +235,7 @@ export default function Play() {
     setIsButtonEnabled(false)
   };
 
+
   return (
     <div className="flex h-screen items-center justify-center flex-col">
       <div className="w-full h-1/4 flex flex-col relative">
@@ -254,14 +249,23 @@ export default function Play() {
           {queue.map((item, index) => (
             <button
               key={index}
-              className={`relative transition-colors ${selectedQueue === item[0] ? 'bg-gray-500 text-white' : 'hover:bg-gray-100'
+              className={`mr-1 relative transition-colors ${selectedQueue === item[0] ? 'bg-gray-500 text-white' : 'hover:bg-gray-100'
                 }`}
               onClick={() => {
                 handleQueueClick(index, item[0], item[1].length);
               }}
             >
-              <p className="text-4xl m-1">{item[1][0]}</p>
-              <p className="text-xs absolute bottom-0 right-0">{item[1].length}</p>
+              <p className="text-4xl">{item[1][0]}</p>
+              <div className="relative w-full mt-auto">
+                <p className="absolute bottom-4 right-1 text-xs">{item[1].length}</p>
+                <div className="w-hull">
+                  <progress
+                    className={`progress ${((item[5][0] / item[5][1]) * 100) >= 80 ? 'progress-error' : 'progress-info'} w-full h-1`}
+                    value={item[5][0]}
+                    max={item[5][1]}
+                  ></progress>
+                </div>
+              </div>
             </button>
           ))}
           <Dialog
@@ -290,6 +294,6 @@ export default function Play() {
       <div className="w-full flex-1 flex justify-center items-center flex-col">
         {generateTableElements(tableDefinitions)}
       </div>
-    </div>
+    </div >
   );
 }
