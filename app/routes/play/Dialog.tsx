@@ -5,6 +5,7 @@ interface DialogProps {
   divider: (index: number) => void;
   value: number;
   setValue: (value: number | ((prev: number) => number)) => void;
+  setPlayPause: (value: boolean) => void;
 }
 
 export default function Dialog({
@@ -13,7 +14,8 @@ export default function Dialog({
   selectedQueue,
   divider,
   value,
-  setValue
+  setValue,
+  setPlayPause
 }: DialogProps) {
   const queueIndex = queue.findIndex(([uuid]) => uuid === selectedQueue);
   const maxLength = queue[queueIndex]?.[1]?.length ?? 0;
@@ -26,15 +28,10 @@ export default function Dialog({
     setValue(prev => Math.max(1, prev - 1));
   };
 
-  const openDialog = () => {
-    if (dialogRef.current) {
-      dialogRef.current.showModal();
-    }
-  };
-
   const closeDialog = () => {
     if (dialogRef.current) {
       dialogRef.current.close();
+      setPlayPause(true);
     }
   };
 

@@ -87,6 +87,7 @@ export default function Play() {
     setQueue(newQueue)
     setValue(1)
     setIsButtonEnabled(false)
+    setPlayPause(true)
   }
 
   function getRandomTimeInRange() {
@@ -153,7 +154,7 @@ export default function Play() {
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [playPause, simTime, clock, navigate, selectedQueue, selectedTable]);
+  }, [playPause, simTime, clock, navigate]);
 
   const insertScore = async () => {
     if (executedRef.current) return;
@@ -253,6 +254,13 @@ export default function Play() {
     setIsButtonEnabled(false)
   };
 
+  const openDialog = () => {
+    if (dialogRef.current) {
+      dialogRef.current.showModal();
+      setPlayPause(false);
+    }
+  };
+
 
   return (
     <div className="flex h-screen items-center justify-center flex-col">
@@ -294,6 +302,7 @@ export default function Play() {
             divider={divider}
             value={value}
             setValue={setValue}
+            setPlayPause={setPlayPause}
           />
           <button
             className={`btn absolute bottom-0 right-0 z-10 m-1 text-xs ${!isButtonEnabled ? 'opacity-50 cursor-not-allowed' : ''
@@ -302,6 +311,7 @@ export default function Play() {
             onClick={() => {
               if (dialogRef.current) {
                 dialogRef.current.showModal();
+                setPlayPause(false)
               }
             }}
           >
