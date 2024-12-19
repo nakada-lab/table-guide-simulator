@@ -1,5 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
-import { Form } from "@remix-run/react";
+import { Form, useNavigate } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -9,6 +9,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
+  const navigate = useNavigate();
   const convertToHalfWidth = (value: string) => {
     return value.replace(/[０-９]/g, s =>
       String.fromCharCode(s.charCodeAt(0) - 65248)
@@ -27,7 +28,7 @@ export default function Index() {
               placeholder="空白可" />
           </div>
           <div className="my-5">
-            <p className=''>飲食歴 (未経験は0)</p>
+            <p className=''>飲食歴を年数で (未経験は0 四捨五入して)</p>
             <div className="flex items-center">
               <div className="flex-1">
                 <input
@@ -69,6 +70,12 @@ export default function Index() {
           </div>
         </div>
         <button type="submit" className="btn my-4 w-full">Play</button>
+        <button
+          className="btn w-full"
+          onClick={() => { navigate('/score'); }}
+        >
+          Score
+        </button>
       </Form>
     </div>
   );

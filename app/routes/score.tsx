@@ -1,10 +1,11 @@
-import { useLocation } from '@remix-run/react';
+import { useLocation, useNavigate } from '@remix-run/react';
 import { useEffect, useState } from 'react';
 import { supabase } from '~/utils/supabase';
 
 export default function Score() {
   const [score, setScore] = useState([]);
   const location = useLocation();
+  const navigate = useNavigate();
 
   let selectedUuid = '';
   if (location.state) {
@@ -32,32 +33,43 @@ export default function Score() {
   }, []);
 
   return (
-    <div>
-      <div className="overflow-x-auto">
-        <table className="table">
-          <thead className="bg-slate-400">
-            <tr>
-              <th className="text-center">No.</th>
-              <th>名前</th>
-              <th>Score</th>
-            </tr>
-          </thead>
-          <tbody>
-            {score.map((item, index) => (
-              <tr
-                key={item.uuid}
-                className={`${item.uuid === selectedUuid ? "bg-yellow-200" : "odd:bg-white even:bg-slate-100"
-                  }`}
-              >
-                <th className="text-center">{index + 1}</th>
-                <td>{item.name}</td>
-                <td>{item.score}</td>
+    <div className="flex flex-col h-screen">
+      <div className="flex-1 overflow-y-auto">
+        <div className="overflow-x-auto">
+          <table className="table">
+            <thead className="bg-slate-400 sticky top-0 z-10">
+              <tr>
+                <th className="text-center">No.</th>
+                <th>名前</th>
+                <th>Score</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {score.map((item, index) => (
+                <tr
+                  key={item.uuid}
+                  className={`${item.uuid === selectedUuid
+                    ? "bg-yellow-200"
+                    : "odd:bg-white even:bg-slate-100"
+                    }`}
+                >
+                  <th className="text-center">{index + 1}</th>
+                  <td>{item.name}</td>
+                  <td>{item.score}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-
+      <div className="bg-slate-400 text-center">
+        <button
+          onClick={() => { navigate('/'); }}
+          className="btn w-1/3 m-3"
+        >
+          Replay
+        </button>
+      </div>
     </div>
   );
 }
