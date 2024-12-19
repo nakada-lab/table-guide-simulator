@@ -168,12 +168,19 @@ export default function Play() {
 
   useEffect(() => {
     if (clock.toLocaleTimeString() in data) {
-      const visitData = data[clock.toLocaleTimeString()];
-      const newGroup = visitData['group_composition'].map((i) =>
-        getEmoji(i['age'], i['gender'])
-      );
-      if (newGroup.length > 0) {
-        setQueue((prevQueue) => [...prevQueue, [visitData['uuid'], newGroup, Math.round(visitData['duration'] / 3), clock, 0, [0, Math.round(Math.random() * 59 * 60 + Math.random() * 59)]]]);
+      const lim = Math.floor(Math.random() * (30 - 16)) + 15;
+      if (queue.length >= lim) {
+        setLeave(prevLeave => [prevLeave[0], prevLeave[1] + 1]);
+        console.log('leave')
+        return
+      } else {
+        const visitData = data[clock.toLocaleTimeString()];
+        const newGroup = visitData['group_composition'].map((i) =>
+          getEmoji(i['age'], i['gender'])
+        );
+        if (newGroup.length > 0) {
+          setQueue((prevQueue) => [...prevQueue, [visitData['uuid'], newGroup, Math.round(visitData['duration'] / 3), clock, 0, [0, Math.round(Math.random() * 59 * 60 + Math.random() * 59)]]]);
+        }
       }
     }
   }, [clock]);
@@ -181,12 +188,12 @@ export default function Play() {
   useEffect(() => {
     const hasItemToRemove = queue.some(item => item[5][0] >= item[5][1]);
 
-    if (hasItemToRemove) {
+    if (hasItemToRemove && (selectedQueue != '' && selectedTable != '')) {
       const newQueue = queue.filter(item => item[5][0] < item[5][1]);
       setQueue(newQueue);
       setLeave(prevLeave => [prevLeave[0] + 1, prevLeave[1]]);
     }
-  }, [queue]);
+  }, [queue, selectedQueue, selectedTable]);
 
   const handleReload = () => {
     setClock(getRandomTimeInRange());
