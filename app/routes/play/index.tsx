@@ -10,7 +10,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const formData = await request.formData();
-  const min = formData.get("min");
+  //const min = formData.get("min");
+  const min = 2
   const name = formData.get('name');
   const year = formData.get('year')
 

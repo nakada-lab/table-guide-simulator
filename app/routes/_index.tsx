@@ -47,7 +47,7 @@ export default function Index() {
               <span className="ml-2">年</span>
             </div>
           </div>
-          <div className="my-5">
+          {/* <div className="my-5">
             <p className="">1時間の営業を好きな時間に圧縮できます</p>
             <span className="label-text mb-2">何分でやる？</span>
             <div className="flex items-center">
@@ -67,7 +67,7 @@ export default function Index() {
               </div>
               <span className="ml-2">分</span>
             </div>
-          </div>
+          </div> */}
         </div>
         <button type="submit" className="btn my-4 w-full">Play</button>
         <button
