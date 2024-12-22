@@ -33,7 +33,7 @@ export default function Play() {
   const [selectedQueue, setSelectedQueue] = useState<string>('');
   const [selectedTable, setSelectedTable] = useState<string>('');
   const [tableData, setTableData] = useState<{ [key: string]: any[] }>(tables);
-  const [simTime, setSimTime] = useState(10)
+  const [simTime, setSimTime] = useState([33.3, 33.3])
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [value, setValue] = useState(1);
   const [score, setScore] = useState<number[]>([])
@@ -104,7 +104,7 @@ export default function Play() {
 
   useEffect(() => {
     if (actionData && !actionData.error) {
-      setSimTime(Math.floor((actionData['min'] * 1000) / 60))
+      setSimTime([Math.floor((actionData['min'] * 1000) / 60), Math.floor((actionData['min'] * 1000) / 60)])
       const uuid = uuidv4()
       nameRef.current = actionData['name'] === '' ? uuid.split('-')[0] : actionData['name']
       yearRef.current = actionData['year']
@@ -147,7 +147,18 @@ export default function Play() {
             });
           }
         }
-      }, simTime);
+
+        const hasNoNullValues = Object.values(tableData).every(arr =>
+          arr.length > 0 && arr[0] !== null
+        );
+
+        if (hasNoNullValues) {
+          setSimTime([0.000000001, simTime[1]])
+        } else {
+          setSimTime([simTime[1], simTime[1]])
+        }
+
+      }, simTime[0]);
     }
 
     return () => {
