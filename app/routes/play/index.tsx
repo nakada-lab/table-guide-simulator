@@ -33,7 +33,7 @@ export default function Play() {
   const [selectedQueue, setSelectedQueue] = useState<string>('');
   const [selectedTable, setSelectedTable] = useState<string>('');
   const [tableData, setTableData] = useState<{ [key: string]: any[] }>(tables);
-  const [simTime, setSimTime] = useState(1000)
+  const [simTime, setSimTime] = useState(10)
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [value, setValue] = useState(1);
   const [score, setScore] = useState<number[]>([])
@@ -275,23 +275,14 @@ export default function Play() {
           {queue.map((item, index) => (
             <button
               key={index}
-              className={`mr-1 relative transition-colors ${selectedQueue === item[0] ? 'bg-gray-500 text-white' : 'hover:bg-gray-100'
+              className={`relative transition-colors ${selectedQueue === item[0] ? 'bg-gray-500 text-white' : 'hover:bg-gray-100'
                 }`}
               onClick={() => {
                 handleQueueClick(index, item[0], item[1].length);
               }}
             >
-              <p className="text-4xl">{item[1][0]}</p>
-              <div className="relative w-full mt-auto">
-                <p className="absolute bottom-4 right-1 text-xs">{item[1].length}</p>
-                <div className="w-hull">
-                  <progress
-                    className={`progress ${((item[5][0] / item[5][1]) * 100) >= 80 ? 'progress-error' : 'progress-info'} w-full h-1`}
-                    value={item[5][0]}
-                    max={item[5][1]}
-                  ></progress>
-                </div>
-              </div>
+              <p className="text-4xl m-1">{item[1][0]}</p>
+              <p className="text-xs absolute bottom-0 right-0">{item[1].length}</p>
             </button>
           ))}
           <Dialog
