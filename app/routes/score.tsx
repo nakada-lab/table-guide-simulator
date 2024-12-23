@@ -41,7 +41,7 @@ export default function Score() {
               <tr>
                 <th className="text-center">No.</th>
                 <th>名前</th>
-                <th>Score</th>
+                <th>Total penalty</th>
               </tr>
             </thead>
             <tbody>
