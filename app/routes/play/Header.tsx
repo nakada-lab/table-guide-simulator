@@ -28,7 +28,7 @@ export default function Header({
           <p className="text-xl font-bold m-4">{clock.toLocaleTimeString()}</p>
         </div>
         <div className="flex justify-center">
-          <p className="text-xl text-center">Score:
+          <p className="text-xl text-center">Penalty:
             {isNaN([...score].reduce((acc, val) => acc + val, 0) / [...score].length)
               ? 0
               : Math.round([...score].reduce((acc, val) => acc + val, 0) / [...score].length)}
