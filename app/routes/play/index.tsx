@@ -7,6 +7,7 @@ import { getEmoji } from "~/utils/myFunction";
 import { supabase } from "~/utils/supabase";
 import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from 'uuid';
+import { generateRandomArrival } from "memo/generate";
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const formData = await request.formData();
@@ -179,21 +180,19 @@ export default function Play() {
   }
 
   useEffect(() => {
-    const radomKey = Object.keys(data)[Math.floor(Math.random() * (Object.keys(data).length))]
-    const randomTime = getRandomTimeInRange().toLocaleTimeString()
-    if (Math.random() <= 0.1) {
-      const lim = Math.floor(Math.random() * (30 - 16)) + 15;
-      if (queue.length >= lim) {
-        setLeave(prevLeave => [prevLeave[0], prevLeave[1] + 1]);
-        setScore(prevState => [...prevState, 1200])
-        return
-      } else {
-        const visitData = data[radomKey];
-        const newGroup = visitData['group_composition'].map((i) =>
+    const lim = Math.floor(Math.random() * (30 - 16)) + 15;
+    const arrive = generateRandomArrival()
+    if (queue.length >= lim) {
+      setLeave(prevLeave => [prevLeave[0], prevLeave[1] + 1]);
+      setScore(prevState => [...prevState, 1200])
+      return
+    } else {
+      if (arrive != null) {
+        const newGroup = arrive['group_composition'].map((i) =>
           getEmoji(i['age'], i['gender'])
         );
         if (newGroup.length > 0) {
-          setQueue((prevQueue) => [...prevQueue, [visitData['uuid'], newGroup, Math.round(visitData['duration'] / 3), clock, 0, [0, Math.round(Math.random() * 59 * 60 + Math.random() * 59)]]]);
+          setQueue((prevQueue) => [...prevQueue, [arrive['uuid'], newGroup, Math.round(arrive['duration'] / 3), clock, 0, [0, Math.round(Math.random() * 59 * 60 + Math.random() * 59)]]]);
         }
       }
     }
