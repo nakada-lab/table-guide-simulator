@@ -3,11 +3,10 @@ import Header from "./Header";
 import TableGenerator from "./Table";
 import data from 'app/models/data.json';
 import { ClientActionFunctionArgs, useActionData, useNavigate } from "@remix-run/react";
-import { getEmoji } from "~/utils/myFunction";
+import { generateRandomArrival, getEmoji } from "~/utils/myFunction";
 import { supabase } from "~/utils/supabase";
 import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from 'uuid';
-import { generateRandomArrival } from "memo/generate";
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const formData = await request.formData();
