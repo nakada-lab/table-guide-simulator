@@ -179,14 +179,16 @@ export default function Play() {
   }
 
   useEffect(() => {
-    if (clock.toLocaleTimeString() in data) {
+    const radomKey = Object.keys(data)[Math.floor(Math.random() * (Object.keys(data).length))]
+    const randomTime = getRandomTimeInRange().toLocaleTimeString()
+    if (Math.random() <= 0.1) {
       const lim = Math.floor(Math.random() * (30 - 16)) + 15;
       if (queue.length >= lim) {
         setLeave(prevLeave => [prevLeave[0], prevLeave[1] + 1]);
         setScore(prevState => [...prevState, 1200])
         return
       } else {
-        const visitData = data[clock.toLocaleTimeString()];
+        const visitData = data[radomKey];
         const newGroup = visitData['group_composition'].map((i) =>
           getEmoji(i['age'], i['gender'])
         );
