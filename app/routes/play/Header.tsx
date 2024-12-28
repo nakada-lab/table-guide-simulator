@@ -14,6 +14,12 @@ type HeaderProps = {
   score: number[];
 };
 
+const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
+
+function getWeekday(date: Date): string {
+  return weekdays[date.getDay()];
+}
+
 export default function Header({
   clock,
   playPause,
@@ -24,8 +30,9 @@ export default function Header({
   return (
     <div className="navbar bg-primary">
       <div className="grid grid-cols-3 w-full">
-        <div className="flex justify-start min-w-[200px]">
-          <p className="text-xl font-bold m-4">{clock.toLocaleTimeString()}</p>
+        <div className="flex justify-start min-w-[200px] flex-col">
+          <p>{clock.toLocaleDateString() + ' ' + getWeekday(clock) + '曜日'}</p>
+          <p className="text-xl font-bold">{clock.toLocaleTimeString()}</p>
         </div>
         <div className="flex justify-center">
           <p className="text-xl text-center">Penalty:
