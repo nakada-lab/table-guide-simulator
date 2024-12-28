@@ -40,6 +40,7 @@ export default function Play() {
   const [score, setScore] = useState<number[]>([])
   const [uuid, setUuid] = useState<string>('');
   const [leave, setLeave] = useState([0, 0])
+  const [visitors, setVisitors] = useState(0)
   const startTimeRef = useRef(null);
   const dialogRef = useRef(null);
   const nameRef = useRef(null);
@@ -176,7 +177,7 @@ export default function Play() {
     const { data: scoreData, error: scoreError } = await supabase
       .from('score')
       .insert([
-        { uuid: uuid, name: nameRef.current, year: yearRef.current, score: Math.round([...score, ...queue.map((s) => s[4])].reduce((acc, val) => acc + val, 0) / [...score, ...queue.map((s) => s[4])].length), duration: [...score, ...queue.map((s) => s[4])], leave: leave, date: new Date(clock.getTime() - (3 * 60 * 60 * 1000)), weekday: getWeekday(clock) },
+        { uuid: uuid, name: nameRef.current, year: yearRef.current, score: Math.round(([...score, ...queue.map((s) => s[4])].reduce((acc, val) => acc + val, 0) / [...score, ...queue.map((s) => s[4])].length) * (visitors / 46)), duration: [...score, ...queue.map((s) => s[4])], leave: leave, date: new Date(clock.getTime() - (3 * 60 * 60 * 1000)), weekday: getWeekday(clock), rotation: visitors / 46 },
       ])
       .select();
   }
@@ -284,6 +285,8 @@ export default function Play() {
     //setScore(prevState => [...prevState, [new Date(queue[queueIndex][3]).getTime(), clock.getTime()]])
     setScore(prevState => [...prevState, queue[queueIndex][4]])
 
+    setVisitors(visitors + queue[queueIndex][1].length)
+
     setQueue(prevState =>
       prevState.filter((_, i) => i !== queueIndex)
     );
@@ -296,7 +299,6 @@ export default function Play() {
       setPlayPause(false);
     }
   };
-
 
   return (
     <div className="flex h-screen items-center justify-center flex-col">
