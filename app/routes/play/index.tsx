@@ -180,7 +180,7 @@ export default function Play() {
 
   useEffect(() => {
     const lim = Math.floor(Math.random() * (30 - 16)) + 15;
-    const arrive = generateRandomArrival()
+    const arrive = generateRandomArrival(clock)
     if (queue.length >= lim) {
       setLeave(prevLeave => [prevLeave[0], prevLeave[1] + 1]);
       setScore(prevState => [...prevState, 1200])
