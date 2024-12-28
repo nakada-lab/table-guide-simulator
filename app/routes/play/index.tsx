@@ -252,9 +252,10 @@ export default function Play() {
   };
 
   const handleQueueClick = (index: number, uuid: string, len: number) => {
-    setSelectedQueue(uuid);
+    setSelectedQueue(prevState => prevState === uuid ? '' : uuid);
     setIsButtonEnabled(len > 1);
   };
+
 
   useEffect(() => {
     if (selectedQueue && selectedTable) {
