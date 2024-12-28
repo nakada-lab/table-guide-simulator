@@ -92,12 +92,21 @@ export default function Play() {
   }
 
   function getRandomTimeInRange() {
-    const hours = Math.floor(Math.random() * (22 - 10) + 10);
+    /* const hours = Math.floor(Math.random() * (22 - 10) + 10);
     const minutes = Math.floor(Math.random() * 60);
     const seconds = Math.floor(Math.random() * 60);
 
     const dateTime = new Date();
-    dateTime.setHours(hours, minutes, seconds);
+    dateTime.setHours(hours, minutes, seconds); */
+    const start = new Date(2023, 0, 1);
+    const end = new Date(2024, 11, 31);
+    let dateTime = new Date()
+    for (let i: number = 0; i < 1000; i++) {
+      dateTime = new Date(
+        start.getTime() + Math.random() * (end.getTime() - start.getTime())
+      );
+      if (9 <= dateTime.getHours() && dateTime.getHours() <= 20) break
+    }
     return dateTime;
   }
 
