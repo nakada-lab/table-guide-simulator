@@ -5,6 +5,7 @@ import {
   IoReloadCircleSharp,
   IoStopCircleSharp,
 } from "react-icons/io5";
+import { getWeekday } from "~/utils/myFunction";
 
 type HeaderProps = {
   clock: Date;
@@ -24,8 +25,9 @@ export default function Header({
   return (
     <div className="navbar bg-primary">
       <div className="grid grid-cols-3 w-full">
-        <div className="flex justify-start min-w-[200px]">
-          <p className="text-xl font-bold m-4">{clock.toLocaleTimeString()}</p>
+        <div className="flex justify-start min-w-[200px] flex-col">
+          <p className="text-xs">{clock.toLocaleDateString() + ' ' + getWeekday(clock)}</p>
+          <p className="text-xl font-bold">{clock.toLocaleTimeString()}</p>
         </div>
         <div className="flex justify-center">
           <p className="text-xl text-center">Penalty:

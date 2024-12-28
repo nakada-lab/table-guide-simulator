@@ -3,7 +3,7 @@ import Header from "./Header";
 import TableGenerator from "./Table";
 import data from 'app/models/data.json';
 import { ClientActionFunctionArgs, useActionData, useNavigate } from "@remix-run/react";
-import { generateRandomArrival, getEmoji } from "~/utils/myFunction";
+import { generateRandomArrival, getEmoji, getWeekday } from "~/utils/myFunction";
 import { supabase } from "~/utils/supabase";
 import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from 'uuid';
@@ -34,7 +34,7 @@ export default function Play() {
   const [selectedQueue, setSelectedQueue] = useState<string>('');
   const [selectedTable, setSelectedTable] = useState<string>('');
   const [tableData, setTableData] = useState<{ [key: string]: any[] }>(tables);
-  const [simTime, setSimTime] = useState([33.3, 33.3])
+  const [simTime, setSimTime] = useState([11.1, 11.1])
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [value, setValue] = useState(1);
   const [score, setScore] = useState<number[]>([])
@@ -78,8 +78,8 @@ export default function Play() {
     const [first, second] = splitArrayAt(queue[index][1], value);
     const front = index > 0 ? queue.slice(0, index) : [];
     const dividedArray = [
-      [queue[index][0], first, queue[index][2], queue[index][3], queue[index][4], queue[index][5]],
-      [uuidv4(), second, queue[index][2], queue[index][3], queue[index][4], queue[index][5]]
+      [queue[index][0], first, queue[index][2], queue[index][3], queue[index][4], [0, 10800000]],
+      [uuidv4(), second, queue[index][2], queue[index][3], queue[index][4], [0, 10800000]]
     ];
 
     const behinde = index < queue.length - 1 ? queue.slice(index + 1) : [];
@@ -92,12 +92,15 @@ export default function Play() {
   }
 
   function getRandomTimeInRange() {
-    const hours = Math.floor(Math.random() * (22 - 10) + 10);
-    const minutes = Math.floor(Math.random() * 60);
-    const seconds = Math.floor(Math.random() * 60);
-
-    const dateTime = new Date();
-    dateTime.setHours(hours, minutes, seconds);
+    const start = new Date(2024, 1, 1);
+    const end = new Date(2024, 12, 31);
+    let dateTime = new Date()
+    for (let i: number = 0; i < 1000; i++) {
+      dateTime = new Date(
+        start.getTime() + Math.random() * (end.getTime() - start.getTime())
+      );
+      if (9 <= dateTime.getHours() && dateTime.getHours() <= 20) break
+    }
     return dateTime;
   }
 
@@ -140,7 +143,7 @@ export default function Play() {
 
         if (!startTimeRef.current) {
           startTimeRef.current = clock;
-        } else if (clock.getTime() - startTimeRef.current.getTime() >= 3600000) {
+        } else if (clock.getTime() - startTimeRef.current.getTime() >= 10800000) {
           if (!executedRef.current) {
             insertScore().then(() => {
               clearInterval(timer);
@@ -173,9 +176,31 @@ export default function Play() {
     const { data: scoreData, error: scoreError } = await supabase
       .from('score')
       .insert([
-        { uuid: uuid, name: nameRef.current, year: yearRef.current, score: Math.round([...score, ...queue.map((s) => s[4])].reduce((acc, val) => acc + val, 0) / [...score, ...queue.map((s) => s[4])].length), duration: [...score, ...queue.map((s) => s[4])], leave: leave },
+        { uuid: uuid, name: nameRef.current, year: yearRef.current, score: Math.round([...score, ...queue.map((s) => s[4])].reduce((acc, val) => acc + val, 0) / [...score, ...queue.map((s) => s[4])].length), duration: [...score, ...queue.map((s) => s[4])], leave: leave, date: new Date(clock.getTime() - (3 * 60 * 60 * 1000)), weekday: getWeekday(clock) },
       ])
       .select();
+  }
+
+  const generatePatience = (datetime: Date) => {
+    const hour = datetime.getHours();
+    const isWeekend = datetime.getDay() === 0 || datetime.getDay() === 6;
+    let patienceTime = 60;
+
+    if (hour < 11) {
+      patienceTime = 45;
+    } else if (hour >= 11 && hour < 14) {
+      patienceTime = 30;
+    } else if (hour >= 14 && hour < 18) {
+      patienceTime = 70;
+    } else {
+      patienceTime = 90;
+    }
+
+    if (isWeekend) {
+      patienceTime *= 0.7;
+    }
+
+    return patienceTime * 60;
   }
 
   useEffect(() => {
@@ -191,7 +216,7 @@ export default function Play() {
           getEmoji(i['age'], i['gender'])
         );
         if (newGroup.length > 0) {
-          setQueue((prevQueue) => [...prevQueue, [arrive['uuid'], newGroup, Math.round(arrive['duration'] / 3), clock, 0, [0, Math.round(Math.random() * 59 * 60 + Math.random() * 59)]]]);
+          setQueue((prevQueue) => [...prevQueue, [arrive['uuid'], newGroup, Math.round(arrive['duration']), clock, 0, [0, generatePatience(clock)]]]);
         }
       }
     }
