@@ -34,7 +34,7 @@ export default function Play() {
   const [selectedQueue, setSelectedQueue] = useState<string>('');
   const [selectedTable, setSelectedTable] = useState<string>('');
   const [tableData, setTableData] = useState<{ [key: string]: any[] }>(tables);
-  const [simTime, setSimTime] = useState([33.3, 33.3])
+  const [simTime, setSimTime] = useState([11.1, 11.1])
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [value, setValue] = useState(1);
   const [score, setScore] = useState<number[]>([])
@@ -140,7 +140,7 @@ export default function Play() {
 
         if (!startTimeRef.current) {
           startTimeRef.current = clock;
-        } else if (clock.getTime() - startTimeRef.current.getTime() >= 3600000) {
+        } else if (clock.getTime() - startTimeRef.current.getTime() >= 10800000) {
           if (!executedRef.current) {
             insertScore().then(() => {
               clearInterval(timer);
@@ -191,22 +191,22 @@ export default function Play() {
           getEmoji(i['age'], i['gender'])
         );
         if (newGroup.length > 0) {
-          setQueue((prevQueue) => [...prevQueue, [arrive['uuid'], newGroup, Math.round(arrive['duration'] / 3), clock, 0, [0, Math.round(Math.random() * 59 * 60 + Math.random() * 59)]]]);
+          setQueue((prevQueue) => [...prevQueue, [arrive['uuid'], newGroup, Math.round(arrive['duration']), clock, 0, [0, Math.round(Math.random() * 59 * 60 + Math.random() * 59)]]]);
         }
       }
     }
   }, [clock]);
 
-  useEffect(() => {
-    const hasItemToRemove = queue.some(item => item[5][0] >= item[5][1]);
-
-    if (hasItemToRemove && (selectedQueue != '' && selectedTable != '')) {
-      const newQueue = queue.filter(item => item[5][0] < item[5][1]);
-      setQueue(newQueue);
-      setLeave(prevLeave => [prevLeave[0] + 1, prevLeave[1]]);
-      setScore(prevState => [...prevState, 600])
-    }
-  }, [queue, selectedQueue, selectedTable]);
+  /*   useEffect(() => {
+      const hasItemToRemove = queue.some(item => item[5][0] >= item[5][1]);
+  
+      if (hasItemToRemove && (selectedQueue != '' && selectedTable != '')) {
+        const newQueue = queue.filter(item => item[5][0] < item[5][1]);
+        setQueue(newQueue);
+        setLeave(prevLeave => [prevLeave[0] + 1, prevLeave[1]]);
+        setScore(prevState => [...prevState, 600])
+      }
+    }, [queue, selectedQueue, selectedTable]); */
 
   const handleReload = () => {
     setClock(getRandomTimeInRange());
