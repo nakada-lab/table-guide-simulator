@@ -28,20 +28,6 @@ const groupRatios = {
   4: 0.35,
 };
 
-const durationMean = 60 * 60;
-const durationStdDev = 15 * 60;
-
-const arrivalRate = 46 / 3600;
-
-function randomNormal(mean: number, stdDev: number): number {
-  let u = 0,
-    v = 0;
-  while (u === 0) u = Math.random();
-  while (v === 0) v = Math.random();
-  const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
-  return Math.round(z * stdDev + mean);
-}
-
 function getRandomGroupSize(): number {
   const rand = Math.random();
   let cumulative = 0;
@@ -93,15 +79,62 @@ function getRandomPerson(): PersonData {
   };
 }
 
-export function generateRandomArrival(): {
+function generateLognormalValue(mean: number, stdDev: number): number {
+  const mu = Math.log(mean ** 2 / Math.sqrt(stdDev ** 2 + mean ** 2));
+  const sigma = Math.sqrt(Math.log(1 + stdDev ** 2 / mean ** 2));
+
+  const u1 = Math.random();
+  const u2 = Math.random();
+  const z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+
+  return Math.exp(mu + sigma * z) * 60;
+}
+
+function generateParameter(datetime: Date): number[] {
+  let mean = 60;
+  let stdDev = 30;
+  let baseArrivalRate = 46 / 3600;
+
+  const hour = datetime.getHours();
+  const isWeekend = datetime.getDay() === 0 || datetime.getDay() === 6;
+
+  if (hour < 11) {
+    mean = 45;
+    stdDev = 20;
+    baseArrivalRate *= 0.8;
+  } else if (hour >= 11 && hour < 14) {
+    mean = 50;
+    stdDev = 15;
+    baseArrivalRate *= 2.5;
+  } else if (hour >= 14 && hour < 18) {
+    mean = 70;
+    stdDev = 35;
+    baseArrivalRate *= 1.2;
+  } else {
+    mean = 90;
+    stdDev = 40;
+    baseArrivalRate *= 0.6;
+  }
+
+  if (isWeekend) {
+    mean *= 0.7;
+    stdDev *= 0.8;
+    baseArrivalRate *= 1.8;
+  }
+
+  return [mean, stdDev, baseArrivalRate];
+}
+
+export function generateRandomArrival(date: Date): {
   group_composition: Array<1>;
   duration: number;
 } | null {
+  const [a1, a2, a3] = generateParameter(date);
   const rand = Math.random();
-  if (rand <= arrivalRate) {
+  if (rand <= a3) {
     const uuid = uuidv4();
-    const departure_time = 0;
-    const duration = Math.max(randomNormal(durationMean, durationStdDev), 600);
+    const departure_time = -1;
+    const duration = Math.min(generateLognormalValue(a1, a2));
     const group_composition = getGroupComposition(getRandomGroupSize());
     return { uuid, departure_time, duration, group_composition };
   }
