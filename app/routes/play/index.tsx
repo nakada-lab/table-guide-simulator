@@ -92,12 +92,6 @@ export default function Play() {
   }
 
   function getRandomTimeInRange() {
-    /* const hours = Math.floor(Math.random() * (22 - 10) + 10);
-    const minutes = Math.floor(Math.random() * 60);
-    const seconds = Math.floor(Math.random() * 60);
-
-    const dateTime = new Date();
-    dateTime.setHours(hours, minutes, seconds); */
     const start = new Date(2024, 1, 1);
     const end = new Date(2024, 12, 31);
     let dateTime = new Date()
@@ -198,7 +192,7 @@ export default function Play() {
       patienceTime = 30;
     } else if (hour >= 14 && hour < 18) {
       patienceTime = 70;
-    } else { // 夜
+    } else {
       patienceTime = 90;
     }
 
