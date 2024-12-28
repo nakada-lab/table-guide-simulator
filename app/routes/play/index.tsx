@@ -3,7 +3,7 @@ import Header from "./Header";
 import TableGenerator from "./Table";
 import data from 'app/models/data.json';
 import { ClientActionFunctionArgs, useActionData, useNavigate } from "@remix-run/react";
-import { generateRandomArrival, getEmoji } from "~/utils/myFunction";
+import { generateRandomArrival, getEmoji, getWeekday } from "~/utils/myFunction";
 import { supabase } from "~/utils/supabase";
 import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from 'uuid';
@@ -182,7 +182,7 @@ export default function Play() {
     const { data: scoreData, error: scoreError } = await supabase
       .from('score')
       .insert([
-        { uuid: uuid, name: nameRef.current, year: yearRef.current, score: Math.round([...score, ...queue.map((s) => s[4])].reduce((acc, val) => acc + val, 0) / [...score, ...queue.map((s) => s[4])].length), duration: [...score, ...queue.map((s) => s[4])], leave: leave },
+        { uuid: uuid, name: nameRef.current, year: yearRef.current, score: Math.round([...score, ...queue.map((s) => s[4])].reduce((acc, val) => acc + val, 0) / [...score, ...queue.map((s) => s[4])].length), duration: [...score, ...queue.map((s) => s[4])], leave: leave, date: new Date(clock.getTime() - (3 * 60 * 60 * 1000)), weekday: getWeekday(clock) },
       ])
       .select();
   }
