@@ -201,7 +201,7 @@ export default function Play() {
       patienceTime *= 0.7;
     }
 
-    return patienceTime * 60;
+    return patienceTime * 100;
   }
 
   useEffect(() => {
@@ -240,8 +240,6 @@ export default function Play() {
       setScore(prevState => [...prevState, 600]);
     }
   }, [queue, selectedQueue]);
-
-
 
   const handleReload = () => {
     setClock(getRandomTimeInRange());
