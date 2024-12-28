@@ -28,7 +28,8 @@ export default function Index() {
               placeholder="空白可" />
           </div>
           <div className="my-5">
-            <p className=''>飲食歴を年数で (未経験は0 四捨五入して)</p>
+            <p className=''>飲食店の従業員歴</p>
+            <p className='text-xs'>四捨五入して整数値でお願いします</p>
             <div className="flex items-center">
               <div className="flex-1">
                 <input
@@ -36,7 +37,7 @@ export default function Index() {
                   name="year"
                   min="0"
                   step="1"
-                  placeholder="整数値"
+                  placeholder="未経験は0"
                   required
                   className="input input-bordered w-full"
                   onInput={(e) => {
