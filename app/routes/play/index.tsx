@@ -224,15 +224,24 @@ export default function Play() {
   }, [clock]);
 
   useEffect(() => {
-    const hasItemToRemove = queue.some(item => item[5][0] >= item[5][1]);
+    const selectedIndex = queue.findIndex(item => item[0] === selectedQueue);
 
-    if (hasItemToRemove && (selectedQueue != '' && selectedTable != '')) {
-      const newQueue = queue.filter(item => item[5][0] < item[5][1]);
+    const hasItemToRemove = queue.some((item, index) =>
+      index !== selectedIndex && item[5][0] >= item[5][1]
+    );
+
+    if (hasItemToRemove) {
+      const newQueue = queue.filter((item, index) =>
+        index === selectedIndex || item[5][0] < item[5][1]
+      );
+
       setQueue(newQueue);
       setLeave(prevLeave => [prevLeave[0] + 1, prevLeave[1]]);
-      setScore(prevState => [...prevState, 600])
+      setScore(prevState => [...prevState, 600]);
     }
-  }, [queue, selectedQueue, selectedTable]);
+  }, [queue, selectedQueue]);
+
+
 
   const handleReload = () => {
     setClock(getRandomTimeInRange());
