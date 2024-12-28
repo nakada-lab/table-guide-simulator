@@ -78,8 +78,8 @@ export default function Play() {
     const [first, second] = splitArrayAt(queue[index][1], value);
     const front = index > 0 ? queue.slice(0, index) : [];
     const dividedArray = [
-      [queue[index][0], first, queue[index][2], queue[index][3], queue[index][4], queue[index][5]],
-      [uuidv4(), second, queue[index][2], queue[index][3], queue[index][4], queue[index][5]]
+      [queue[index][0], first, queue[index][2], queue[index][3], queue[index][4], [0, 10800000]],
+      [uuidv4(), second, queue[index][2], queue[index][3], queue[index][4], [0, 10800000]]
     ];
 
     const behinde = index < queue.length - 1 ? queue.slice(index + 1) : [];
@@ -187,6 +187,28 @@ export default function Play() {
       .select();
   }
 
+  const generatePatience = (datetime: Date) => {
+    const hour = datetime.getHours();
+    const isWeekend = datetime.getDay() === 0 || datetime.getDay() === 6;
+    let patienceTime = 60;
+
+    if (hour < 11) {
+      patienceTime = 45;
+    } else if (hour >= 11 && hour < 14) {
+      patienceTime = 30;
+    } else if (hour >= 14 && hour < 18) {
+      patienceTime = 70;
+    } else { // 夜
+      patienceTime = 90;
+    }
+
+    if (isWeekend) {
+      patienceTime *= 0.7;
+    }
+
+    return patienceTime * 60;
+  }
+
   useEffect(() => {
     const lim = Math.floor(Math.random() * (30 - 16)) + 15;
     const arrive = generateRandomArrival(clock)
@@ -200,22 +222,22 @@ export default function Play() {
           getEmoji(i['age'], i['gender'])
         );
         if (newGroup.length > 0) {
-          setQueue((prevQueue) => [...prevQueue, [arrive['uuid'], newGroup, Math.round(arrive['duration']), clock, 0, [0, Math.round(Math.random() * 59 * 60 + Math.random() * 59)]]]);
+          setQueue((prevQueue) => [...prevQueue, [arrive['uuid'], newGroup, Math.round(arrive['duration']), clock, 0, [0, generatePatience(clock)]]]);
         }
       }
     }
   }, [clock]);
 
-  /*   useEffect(() => {
-      const hasItemToRemove = queue.some(item => item[5][0] >= item[5][1]);
-  
-      if (hasItemToRemove && (selectedQueue != '' && selectedTable != '')) {
-        const newQueue = queue.filter(item => item[5][0] < item[5][1]);
-        setQueue(newQueue);
-        setLeave(prevLeave => [prevLeave[0] + 1, prevLeave[1]]);
-        setScore(prevState => [...prevState, 600])
-      }
-    }, [queue, selectedQueue, selectedTable]); */
+  useEffect(() => {
+    const hasItemToRemove = queue.some(item => item[5][0] >= item[5][1]);
+
+    if (hasItemToRemove && (selectedQueue != '' && selectedTable != '')) {
+      const newQueue = queue.filter(item => item[5][0] < item[5][1]);
+      setQueue(newQueue);
+      setLeave(prevLeave => [prevLeave[0] + 1, prevLeave[1]]);
+      setScore(prevState => [...prevState, 600])
+    }
+  }, [queue, selectedQueue, selectedTable]);
 
   const handleReload = () => {
     setClock(getRandomTimeInRange());

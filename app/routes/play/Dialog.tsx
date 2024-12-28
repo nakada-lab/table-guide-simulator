@@ -72,7 +72,10 @@ export default function Dialog({
             <form method="dialog" className="w-full flex items-center justify-center">
               <button
                 className="btn bg-neutral"
-                onClick={closeDialog}
+                onClick={() => {
+                  closeDialog()
+                  setValue(1)
+                }}
               >
                 閉じる
               </button>
