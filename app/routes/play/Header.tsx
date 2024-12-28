@@ -5,6 +5,7 @@ import {
   IoReloadCircleSharp,
   IoStopCircleSharp,
 } from "react-icons/io5";
+import { getWeekday } from "~/utils/myFunction";
 
 type HeaderProps = {
   clock: Date;
@@ -13,12 +14,6 @@ type HeaderProps = {
   onReload: () => void;
   score: number[];
 };
-
-const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
-
-function getWeekday(date: Date): string {
-  return weekdays[date.getDay()];
-}
 
 export default function Header({
   clock,
