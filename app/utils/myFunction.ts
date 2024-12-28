@@ -144,5 +144,5 @@ export function generateRandomArrival(date: Date): {
 const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
 
 export function getWeekday(date: Date): string {
-  return weekdays[date.getDay()];
+  return weekdays[date.getDay()] + "曜日";
 }

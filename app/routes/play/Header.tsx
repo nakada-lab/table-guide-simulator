@@ -26,7 +26,7 @@ export default function Header({
     <div className="navbar bg-primary">
       <div className="grid grid-cols-3 w-full">
         <div className="flex justify-start min-w-[200px] flex-col">
-          <p>{clock.toLocaleDateString() + ' ' + getWeekday(clock) + '曜日'}</p>
+          <p className="text-xs">{clock.toLocaleDateString() + ' ' + getWeekday(clock)}</p>
           <p className="text-xl font-bold">{clock.toLocaleTimeString()}</p>
         </div>
         <div className="flex justify-center">
