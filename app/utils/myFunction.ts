@@ -172,7 +172,7 @@ export function generateOccupancy(datetime: Date): number {
     seatDurations = seatDurations.map((duration) => duration - 1);
   }
 
-  return occupiedSeats / totalSeats;
+  return occupiedSeats / (totalSeats * 1.5);
 }
 
 export function getRandomNumbers(ratio: number): number[] {
