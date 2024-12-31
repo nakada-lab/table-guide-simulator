@@ -3,7 +3,7 @@ import Header from "./Header";
 import TableGenerator from "./Table";
 import data from 'app/models/data.json';
 import { ClientActionFunctionArgs, useActionData, useNavigate } from "@remix-run/react";
-import { generateRandomArrival, getEmoji, getWeekday } from "~/utils/myFunction";
+import { generateOccupancy, generateRandomArrival, getEmoji, getGroupComposition, getRandomNumbers, getWeekday, startOccupy } from "~/utils/myFunction";
 import { supabase } from "~/utils/supabase";
 import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from 'uuid';
@@ -46,6 +46,7 @@ export default function Play() {
   const nameRef = useRef(null);
   const yearRef = useRef(null);
   const executedRef = useRef(false)
+  const refFirstRef = useRef(true);
   const navigate = useNavigate();
 
   function generateTables(definitions) {
@@ -308,6 +309,25 @@ export default function Play() {
     }
   };
 
+  useEffect(() => {
+    if (refFirstRef.current) {
+      const occupancyRatio = generateOccupancy(clock)
+      const occupy = getRandomNumbers(occupancyRatio)
+      for (let i: number = 0; i < occupy.length; i++) {
+        const arrive = startOccupy(clock, tables[String(occupy[i])][1].length)
+        const emoji = []
+        for (let j: number = 0; j < arrive.group_composition.length; j++) {
+          emoji.push(getEmoji(arrive.group_composition[j].age, arrive.group_composition[j].gender))
+        }
+        tables[String(occupy[i])] = [
+          Math.round(arrive.duration),
+          emoji
+        ]
+      }
+      refFirstRef.current = false;
+    }
+  }, [])
+
   return (
     <div className="flex h-screen items-center justify-center flex-col">
       <div className="w-full h-1/4 flex flex-col relative">
@@ -322,8 +342,8 @@ export default function Play() {
           {queue.map((item, index) => (
             <button
               key={index}
-              className={`relative transition-colors ${selectedQueue === item[0] ? 'bg-gray-500 text-white' : 'hover:bg-gray-100'
-                }`}
+              className={`relative transition - colors ${selectedQueue === item[0] ? 'bg-gray-500 text-white' : 'hover:bg-gray-100'
+                } `}
               onClick={() => {
                 handleQueueClick(index, item[0], item[1].length);
               }}
@@ -342,8 +362,8 @@ export default function Play() {
             setPlayPause={setPlayPause}
           />
           <button
-            className={`btn absolute bottom-0 right-0 z-10 m-1 text-xs ${!isButtonEnabled ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
+            className={`btn absolute bottom - 0 right - 0 z - 10 m - 1 text - xs ${!isButtonEnabled ? 'opacity-50 cursor-not-allowed' : ''
+              } `}
             disabled={!isButtonEnabled}
             onClick={() => {
               if (dialogRef.current) {
