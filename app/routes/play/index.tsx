@@ -342,8 +342,8 @@ export default function Play() {
           {queue.map((item, index) => (
             <button
               key={index}
-              className={`relative transition - colors ${selectedQueue === item[0] ? 'bg-gray-500 text-white' : 'hover:bg-gray-100'
-                } `}
+              className={`relative transition-colors ${selectedQueue === item[0] ? 'bg-gray-500 text-white' : 'hover:bg-gray-100'
+                }`}
               onClick={() => {
                 handleQueueClick(index, item[0], item[1].length);
               }}
@@ -362,8 +362,8 @@ export default function Play() {
             setPlayPause={setPlayPause}
           />
           <button
-            className={`btn absolute bottom - 0 right - 0 z - 10 m - 1 text - xs ${!isButtonEnabled ? 'opacity-50 cursor-not-allowed' : ''
-              } `}
+            className={`btn absolute bottom-0 right-0 z-10 m-1 text-xs ${!isButtonEnabled ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
             disabled={!isButtonEnabled}
             onClick={() => {
               if (dialogRef.current) {
