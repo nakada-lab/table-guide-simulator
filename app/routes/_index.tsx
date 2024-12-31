@@ -13,6 +13,12 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   const [manualCounter, setManualCounter] = useState(1);
   const [isManualDialogOpen, setManualIsDialogOpen] = useState(false);
+  const manual = [
+    "上に待ち列が表示される",
+    "名前の右下にグループの人数がでる",
+    "グループのを入れたいテーブルに案内",
+    "テーブルの下に小さく滞在時間が出る"
+  ]
 
   const navigate = useNavigate();
   const convertToHalfWidth = (value: string) => {
@@ -99,6 +105,7 @@ export default function Index() {
               className="border border-black p-1"
             />
             <div className="flex items-center justify-center flex-col">
+              <p className="m-1">{manual[manualCounter - 1]}</p>
               <div className="flex items-center justify-center">
                 <button
                   className="btn w-20 m-5"
@@ -118,7 +125,10 @@ export default function Index() {
             </div>
             <button
               className="absolute top-2 right-2 font-bold text-gray-700 text-3xl "
-              onClick={() => setManualIsDialogOpen(false)}
+              onClick={() => {
+                setManualIsDialogOpen(false)
+                setManualCounter(1)
+              }}
             >
               <FiXCircle />
             </button>
