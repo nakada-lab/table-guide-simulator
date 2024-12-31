@@ -146,3 +146,53 @@ const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
 export function getWeekday(date: Date): string {
   return weekdays[date.getDay()] + "曜日";
 }
+
+export function generateOccupancy(datetime: Date): number {
+  const [mean, stdDev, baseArrivalRate] = generateParameter(datetime);
+  const totalSeats = 22;
+  const simulationSteps = 500;
+  let occupiedSeats = 0;
+  let seatDurations: number[] = [];
+
+  for (let step = 0; step < simulationSteps; step++) {
+    seatDurations = seatDurations.filter((duration) => duration > 0);
+    occupiedSeats = seatDurations.length;
+
+    if (Math.random() <= baseArrivalRate) {
+      const groupSize = getRandomGroupSize();
+      const duration = generateLognormalValue(mean, stdDev);
+
+      if (occupiedSeats + groupSize <= totalSeats) {
+        for (let i = 0; i < groupSize; i++) {
+          seatDurations.push(duration);
+        }
+      }
+    }
+
+    seatDurations = seatDurations.map((duration) => duration - 1);
+  }
+
+  return occupiedSeats / totalSeats;
+}
+
+export function getRandomNumbers(ratio: number): number[] {
+  const total = 22;
+
+  const numbers = Array.from({ length: total }, (_, i) => i + 1);
+
+  const countToSelect = Math.floor(numbers.length * ratio);
+
+  for (let i = numbers.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+  }
+
+  return numbers.slice(0, countToSelect);
+}
+
+export function startOccupy(date, groupSize) {
+  const [a1, a2, a3] = generateParameter(date);
+  const duration = Math.min(generateLognormalValue(a1, a2));
+  const group_composition = getGroupComposition(groupSize);
+  return { duration, group_composition };
+}
