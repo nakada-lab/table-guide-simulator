@@ -244,11 +244,13 @@ export default function Play() {
   }, [queue, selectedQueue]);
 
   const handleReload = () => {
+    startTimeRef.current = null;
     setClock(getRandomTimeInRange());
     setPlayPause(true);
     setQueue([]);
     setTableData(tables)
     setScore([])
+    occupancy()
   };
 
   const handleQueueClick = (index: number, uuid: string, len: number) => {
@@ -316,22 +318,26 @@ export default function Play() {
 
   useEffect(() => {
     if (refFirstRef.current) {
-      const occupancyRatio = generateOccupancy(clock)
-      const occupy = getRandomNumbers(occupancyRatio)
-      for (let i: number = 0; i < occupy.length; i++) {
-        const arrive = startOccupy(clock, tables[String(occupy[i])][1].length)
-        const emoji = []
-        for (let j: number = 0; j < arrive.group_composition.length; j++) {
-          emoji.push(getEmoji(arrive.group_composition[j].age, arrive.group_composition[j].gender))
-        }
-        tables[String(occupy[i])] = [
-          Math.round(arrive.duration),
-          emoji
-        ]
-      }
+      occupancy()
       refFirstRef.current = false;
     }
   }, [])
+
+  const occupancy = () => {
+    const occupancyRatio = generateOccupancy(clock)
+    const occupy = getRandomNumbers(occupancyRatio)
+    for (let i: number = 0; i < occupy.length; i++) {
+      const arrive = startOccupy(clock, tables[String(occupy[i])][1].length)
+      const emoji = []
+      for (let j: number = 0; j < arrive.group_composition.length; j++) {
+        emoji.push(getEmoji(arrive.group_composition[j].age, arrive.group_composition[j].gender))
+      }
+      tables[String(occupy[i])] = [
+        Math.round(arrive.duration),
+        emoji
+      ]
+    }
+  }
 
   return (
     <div className="flex h-screen items-center justify-center flex-col">
