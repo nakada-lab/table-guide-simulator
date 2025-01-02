@@ -105,7 +105,7 @@ function generateParameter(datetime: Date): number[] {
   } else if (hour >= 11 && hour < 14) {
     mean = 50;
     stdDev = 15;
-    baseArrivalRate *= 2.5;
+    baseArrivalRate *= 1.2;
   } else if (hour >= 14 && hour < 18) {
     mean = 70;
     stdDev = 35;

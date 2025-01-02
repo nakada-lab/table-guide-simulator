@@ -40,6 +40,7 @@ export default function Play() {
   const [score, setScore] = useState<number[]>([])
   const [uuid, setUuid] = useState<string>('');
   const [leave, setLeave] = useState([0, 0])
+  const [log, setLog] = useState([]);
   const [visitors, setVisitors] = useState(0)
   const startTimeRef = useRef(null);
   const dialogRef = useRef(null);
@@ -261,6 +262,10 @@ export default function Play() {
       processSelection(selectedQueue, selectedTable);
       setSelectedQueue('');
       setSelectedTable('');
+    } else if (selectedQueue) {
+      setPlayPause(false)
+    } else if (!selectedQueue) {
+      setPlayPause(true)
     }
   }, [selectedQueue, selectedTable]);
 
