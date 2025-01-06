@@ -145,7 +145,7 @@ export default function Play() {
 
         if (!startTimeRef.current) {
           startTimeRef.current = clock;
-        } else if (clock.getTime() - startTimeRef.current.getTime() >= 10800000) {
+        } else if (clock.getTime() - startTimeRef.current.getTime() >= 7200000) {
           if (!executedRef.current) {
             insertScore().then(() => {
               clearInterval(timer);
