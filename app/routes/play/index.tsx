@@ -298,7 +298,6 @@ export default function Play() {
         ...emojiGroup,
         ...Array(Math.max(0, targetLength - emojiGroup.length)).fill('')
       ];
-      console.log(queue[queueIndex][0])
       return {
         ...prevState,
         [selectedTable]: [queue[queueIndex][2], paddedEmojiGroup, queue[queueIndex][0]]
@@ -352,7 +351,6 @@ export default function Play() {
       queue: queue,
       tableData: tableData
     }]])
-    console.log(log)
   }, [queue.length])
 
   return (
