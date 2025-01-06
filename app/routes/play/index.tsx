@@ -1,9 +1,8 @@
 import Dialog from "./Dialog";
 import Header from "./Header";
 import TableGenerator from "./Table";
-import data from 'app/models/data.json';
 import { ClientActionFunctionArgs, useActionData, useNavigate } from "@remix-run/react";
-import { generateOccupancy, generateRandomArrival, getEmoji, getGroupComposition, getRandomNumbers, getWeekday, startOccupy } from "~/utils/myFunction";
+import { generateOccupancy, generateRandomArrival, getEmoji, getRandomNumbers, getWeekday, startOccupy } from "~/utils/myFunction";
 import { supabase } from "~/utils/supabase";
 import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from 'uuid';
@@ -40,7 +39,7 @@ export default function Play() {
   const [score, setScore] = useState<number[]>([])
   const [uuid, setUuid] = useState<string>('');
   const [leave, setLeave] = useState([0, 0])
-  const [log, setLog] = useState([]);
+  const [log, setLog] = useState([{}]);
   const [visitors, setVisitors] = useState(0)
   const startTimeRef = useRef(null);
   const dialogRef = useRef(null);
@@ -55,7 +54,7 @@ export default function Play() {
     definitions.forEach(({ start, end, tableAmount }) => {
       for (let i = start; i <= end; i++) {
         const emptyTable = Array(tableAmount).fill('')
-        tables[i] = [null, emptyTable]
+        tables[i] = [null, emptyTable, null]
       }
     });
     return tables
@@ -129,7 +128,7 @@ export default function Play() {
           const newState = { ...prevState };
           for (const key in prevState) {
             if (prevState[key][0] != null) {
-              newState[key] = [prevState[key][0] - 1, prevState[key][1]];
+              newState[key] = [prevState[key][0] - 1, prevState[key][1], prevState[key][2]];
               if (prevState[key][0] === 0) {
                 newState[key] = [null, tables[key][1]];
               }
@@ -146,7 +145,7 @@ export default function Play() {
 
         if (!startTimeRef.current) {
           startTimeRef.current = clock;
-        } else if (clock.getTime() - startTimeRef.current.getTime() >= 10800000) {
+        } else if (clock.getTime() - startTimeRef.current.getTime() >= 7200000) {
           if (!executedRef.current) {
             insertScore().then(() => {
               clearInterval(timer);
@@ -182,6 +181,14 @@ export default function Play() {
         { uuid: uuid, name: nameRef.current, year: yearRef.current, score: Math.round(([...score, ...queue.map((s) => s[4])].reduce((acc, val) => acc + val, 0) / [...score, ...queue.map((s) => s[4])].length) * (visitors / 46)), duration: [...score, ...queue.map((s) => s[4])], leave: leave, date: new Date(clock.getTime() - (3 * 60 * 60 * 1000)), weekday: getWeekday(clock), rotation: visitors / 46 },
       ])
       .select();
+
+    const { data: logData, error: logDataError } = await supabase
+      .from('log')
+      .insert([
+        { uuid: uuid, log: log },
+      ])
+      .select()
+
   }
 
   const generatePatience = (datetime: Date) => {
@@ -291,10 +298,9 @@ export default function Play() {
         ...emojiGroup,
         ...Array(Math.max(0, targetLength - emojiGroup.length)).fill('')
       ];
-
       return {
         ...prevState,
-        [selectedTable]: [queue[queueIndex][2], paddedEmojiGroup]
+        [selectedTable]: [queue[queueIndex][2], paddedEmojiGroup, queue[queueIndex][0]]
       };
     });
 
@@ -334,10 +340,18 @@ export default function Play() {
       }
       tables[String(occupy[i])] = [
         Math.round(arrive.duration),
-        emoji
+        emoji,
+        null
       ]
     }
   }
+
+  useEffect(() => {
+    setLog([...log, [clock, {
+      queue: queue,
+      tableData: tableData
+    }]])
+  }, [queue.length])
 
   return (
     <div className="flex h-screen items-center justify-center flex-col">
