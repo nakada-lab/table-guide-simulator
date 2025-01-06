@@ -1,9 +1,8 @@
 import Dialog from "./Dialog";
 import Header from "./Header";
 import TableGenerator from "./Table";
-import data from 'app/models/data.json';
 import { ClientActionFunctionArgs, useActionData, useNavigate } from "@remix-run/react";
-import { generateOccupancy, generateRandomArrival, getEmoji, getGroupComposition, getRandomNumbers, getWeekday, startOccupy } from "~/utils/myFunction";
+import { generateOccupancy, generateRandomArrival, getEmoji, getRandomNumbers, getWeekday, startOccupy } from "~/utils/myFunction";
 import { supabase } from "~/utils/supabase";
 import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from 'uuid';
@@ -182,6 +181,14 @@ export default function Play() {
         { uuid: uuid, name: nameRef.current, year: yearRef.current, score: Math.round(([...score, ...queue.map((s) => s[4])].reduce((acc, val) => acc + val, 0) / [...score, ...queue.map((s) => s[4])].length) * (visitors / 46)), duration: [...score, ...queue.map((s) => s[4])], leave: leave, date: new Date(clock.getTime() - (3 * 60 * 60 * 1000)), weekday: getWeekday(clock), rotation: visitors / 46 },
       ])
       .select();
+
+    const { data: logData, error: logDataError } = await supabase
+      .from('log')
+      .insert([
+        { uuid: uuid, log: log },
+      ])
+      .select()
+
   }
 
   const generatePatience = (datetime: Date) => {
