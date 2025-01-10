@@ -97,7 +97,7 @@ export default function Index() {
       </Form>
       {isManualDialogOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="h-5/6 w-5/6 flex items-center justify-center flex-col bg-white p-10 relative">
+          <div className="h-5/6 w-5/6 flex items-center justify-center flex-col bg-white p-20 relative">
             <p className="text-2xl m-5">操作説明</p>
             <img
               src={`/table-guide-simulator/manual/${String(manualCounter)}.PNG`}
@@ -105,7 +105,7 @@ export default function Index() {
               className="border border-black p-1"
             />
             <div className="flex items-center justify-center flex-col">
-              <p className="m-1">{manual[manualCounter - 1]}</p>
+              <p className="m-1 text-xs">{manual[manualCounter - 1]}</p>
               <div className="flex items-center justify-center">
                 <button
                   className="btn w-20 m-5"

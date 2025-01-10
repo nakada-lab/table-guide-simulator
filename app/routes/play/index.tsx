@@ -355,7 +355,7 @@ export default function Play() {
 
   return (
     <div className="flex h-screen items-center justify-center flex-col">
-      <div className="w-full h-1/4 flex flex-col relative">
+      <div className="w-full h-1/5 flex flex-col relative">
         <Header
           clock={clock}
           playPause={playPause}
@@ -402,7 +402,7 @@ export default function Play() {
         </div>
       </div>
       <hr className="border-2 border-primary mb-4 w-full" />
-      <div className="w-full flex-1 flex justify-center items-center flex-col">
+      <div className="w-full flex-1 flex items-center flex-col">
         {generateTableElements(tableDefinitions)}
       </div>
     </div >
