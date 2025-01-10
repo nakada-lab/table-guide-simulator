@@ -214,13 +214,8 @@ export default function Play() {
   }
 
   useEffect(() => {
-    const lim = Math.floor(Math.random() * (30 - 16)) + 15;
     const arrive = generateRandomArrival(clock)
-    if (queue.length >= lim) {
-      setLeave(prevLeave => [prevLeave[0], prevLeave[1] + 1]);
-      setScore(prevState => [...prevState, 1200])
-      return
-    } else {
+    if (Math.random() < Math.exp(-queue.length / 10)) {
       if (arrive != null) {
         const newGroup = arrive['group_composition'].map((i) =>
           getEmoji(i['age'], i['gender'])
@@ -229,6 +224,9 @@ export default function Play() {
           setQueue((prevQueue) => [...prevQueue, [arrive['uuid'], newGroup, Math.round(arrive['duration']), clock, 0, [0, generatePatience(clock)]]]);
         }
       }
+    } else {
+      setLeave(prevLeave => [prevLeave[0], prevLeave[1] + 1]);
+      setScore(prevState => [...prevState, 1200])
     }
   }, [clock]);
 
